@@ -3,7 +3,7 @@ LazyPages
 
 A contextual pagination jQuery plugin for infinite scrolling pages. Early days--pretty rough at the moment. Check the demo!
 
-The goal is to contextualize the infinite scrolling experience, rather than let the user scroll into a bottomless pit. Receive instant feedback when pages are added and easily navigate to previously viewed pages.
+The goal is to contextualize the infinite scrolling experience, rather than let the user scroll into a bottomless pit. The user receives instant feedback when pages are added and easily navigates to previously viewed pages.
 
 A Picture!
 --------------
