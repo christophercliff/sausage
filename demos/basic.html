@@ -67,6 +67,12 @@
             
             (function(){
                 
+                /*
+                    
+                    This first part is just throwaway code to simulate a lazy loaded page.
+                    
+                */
+                
                 var pages = [],
                     ran = Math.floor((3-1)*Math.random()) + 2,
                     $pages = $('.page-set'),
@@ -107,6 +113,12 @@
                     }
                     
                 });
+                
+                /*
+                    
+                    This is where the plugin is initialized.
+                    
+                */
                 
                 $pages
                     .lazypages()
