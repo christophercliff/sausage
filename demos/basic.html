@@ -1,0 +1,121 @@
+<!doctype html>
+
+<html>
+    
+    <head>
+        
+        <title>Lazy Pages</title>
+        
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset/reset-min.css">
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css">
+        <link rel="stylesheet" type="text/css" href="../stylesheets/lazypages.css">
+        
+        <style type="text/css">
+            
+            body {
+                overflow-y: scroll;
+            }
+                #site {
+                    width: 500px;
+                    padding: 40px; margin: 0 auto;
+                }
+                    h1 {
+                        margin-bottom: 40px;
+                        font-size: 24px;
+                    }
+                    .page-set {
+                        
+                    }
+                        .page {
+                            padding: 20px; margin-bottom: 40px;
+                            background-color: #eee;
+                            -moz-border-radius: 20px;
+                            -webkit-border-bottom-left-radius: 20px;
+                            -webkit-border-top-left-radius: 20px;
+                            -webkit-border-bottom-right-radius: 20px;
+                            -webkit-border-top-right-radius: 20px;
+                        }
+            
+        </style>
+        
+    </head>
+    
+    <body>
+        
+        <div id="site">
+            
+            <h1>My Infinite Scrolling Blog</h1>
+            
+            <ol class="page-set">
+                
+            </ol>
+            
+        </div>
+        
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="https://github.com/jquery/jquery-tmpl/raw/master/jquery.tmpl.min.js"></script>
+        <script type="text/javascript" src="../javascripts/jquery.lazypages.js"></script>
+        
+        <script id="lazypages" type="text/x-jquery-tmpl">
+            <li class="lzp" style="height:{{= h_page_rel }}px;top:{{= o_page_rel }}px;">
+                <a class="lzp-a" href="{{= href }}" title="{{= title }}"><span class="lzp-span">{{= title }}</span></a>
+            </li>
+        </script>
+        
+        <script type="text/javascript">
+            
+            (function(){
+                
+                var pages = [],
+                    ran = Math.floor((3-1)*Math.random()) + 2,
+                    $pages = $('.page-set'),
+                    $lzp,
+                    i,
+                    index;
+                
+                function addPage(ii) {
+                    
+                    var h_page = (Math.floor((1000-499)*Math.random()) + 500)*5;
+                    
+                    $pages
+                        .append('<li class="page" style="height:' + h_page + 'px;">Page ' + (ii + 1) + '</li>')
+                        ;
+                    
+                };
+                
+                for (i = 0; i < ran; i++)
+                {
+                    addPage(i);
+                }
+                
+                $(window).scroll(function(){
+                    
+                    if  ($(window).scrollTop() > $(document).height() - $(window).height() - 200)
+                    {
+                        setTimeout(function(){
+                            
+                            addPage(i);
+
+                            $pages
+                                .lazypages('draw')
+                                ;
+                            
+                            i++;
+                            
+                        }, 500);
+                    }
+                    
+                });
+                
+                $pages
+                    .lazypages()
+                    ;
+                
+            }());
+            
+        </script>
+        
+    </body>
+    
+</html>
