@@ -1,4 +1,4 @@
-lazypages
+sausage
 ===========
 
 A contextual pagination jQuery plugin for infinite scrolling pages. View a demo below!
@@ -13,7 +13,7 @@ A Picture!
 Demos
 --------------
 
-- [Basic](http://christophercliff.github.com/lazypages/demos/basic.html "Basic")
+- [Basic](http://christophercliff.github.com/sausage/demos/basic.html "Basic")
 
 Requirements
 -------------
@@ -25,7 +25,7 @@ Usage
 -------------
 
     $('.myPages')
-        .lazypages()
+        .sausage()
         ;
 
 Presumably, you have some callbacks available for lazy loading additional data. If that's the case, you can do the following:
@@ -34,15 +34,15 @@ Presumably, you have some callbacks available for lazy loading additional data. 
     startLoadingSomeData: function () {
     
         $('.myPages')
-            .lazypages('block')
+            .sausage('block')
             ;
     
     },
     gotTheDataAndUpdatedTheDOM: function () {
     
         $('.myPages')
-            .lazypages('draw')
-            .lazypages('unblock')
+            .sausage('draw')
+            .sausage('unblock')
             ;
         
     }
