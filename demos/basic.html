@@ -44,7 +44,7 @@
         
         <div id="site">
             
-            <h1>My Infinite Scrolling Blog (500 draws: <span id="out"></span>)</h1>
+            <h1>My Infinite Scrolling Blog</h1>
             
             <ol class="page-set">
                 
@@ -116,22 +116,6 @@
                 $pages
                     .sausages()
                     ;
-                
-                function t() {  
-                    var time = new Date();  
-                    return time.getTime();  
-                }
-                
-                var s = t();   
-                
-                for (var i = 0; i < 500; i++)
-                {  
-                    $pages
-                        .sausages('draw')
-                        ;
-                }
-                
-                $('#out').append((t() - s) + 'ms');
                 
             }());
             
