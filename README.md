@@ -1,9 +1,9 @@
-LazyPages
+Sausages
 ===========
 
 A contextual pagination jQuery plugin for infinite scrolling pages. Early days--pretty rough at the moment. Check the demo!
 
-The goal is to contextualize the infinite scrolling experience, rather than let the user scroll into a bottomless pit. The user receives instant feedback when pages are added and easily navigates to previously viewed pages.
+The goal of this project is to contextualize the infinite scrolling experience. Rather than have the user scroll into a bottomless pit, provide instant feedback when pages are added and allow for navigation to previously viewed pages.
 
 A Picture!
 --------------
@@ -20,13 +20,12 @@ Requirements
 
 - jQuery 1.4.3
 - jQuery UI 1.8.5
-- jQuery Templates
 
 Usage
 -------------
 
     $('.myPages')
-        .lazypages()
+        .sausages()
         ;
 
 Presumably, you have some callbacks available for lazy loading additional data. If that's the case, you can do the following:
@@ -35,19 +34,17 @@ Presumably, you have some callbacks available for lazy loading additional data. 
     startLoadingSomeData: function () {
     
         $('.myPages')
-            .lazypages('block')
+            .sausages('block')
             ;
     
     },
-    gotTheDataAndInsertedInDOM: function () {
+    gotTheDataAndUpdatedTheDOM: function () {
     
         $('.myPages')
-            .lazypages('draw')
+            .sausages('draw')
+            .sausages('unblock')
             ;
-    
-        $('.myPages')
-            .lazypages('unblock')
-            ;
+        
     }
     ...
 
@@ -58,5 +55,5 @@ Future development/TODOs
 - Customizable tooltips (e.g. page name, thumbnail, etc.)
 - Blocking
 - BUG: alignment gets progressively worse as pages are added, need to investigate...
-- Highlight the current page
+- <strike>Highlight the current page</strike>
 - Scale to 100+ pages (&#8734; pages!?!?)
