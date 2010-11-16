@@ -1,3 +1,11 @@
+/*!
+ * lazypages (for jQuery)
+ * https://github.com/christophercliff/lazypages
+ *
+ * Copyright 2010, Christopher Cliff, christophercliff.com
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ */
 ;(function($, window, document, undefined){
     
     $.widget('ctc.lazypages', {
