@@ -1,7 +1,7 @@
 lazypages
 ===========
 
-A contextual pagination jQuery plugin for infinite scrolling pages. Early days--pretty rough at the moment. Check the demo!
+A contextual pagination jQuery plugin for infinite scrolling pages. View a demo below!
 
 The goal of this project is to contextualize the infinite scrolling experience. Rather than have the user scroll into a bottomless pit, provide instant feedback when pages are added and allow for navigation to previously viewed pages.
 
@@ -55,5 +55,6 @@ Future development/TODOs
 - Customizable tooltips (e.g. page name, thumbnail, etc.)
 - Blocking
 - BUG: alignment gets progressively worse as pages are added, need to investigate...
-- <strike>Highlight the current page</strike>
+- <del>Highlight the current page</del>
 - Scale to 100+ pages (&#8734; pages!?!?)
+- See "Issues" for more...
