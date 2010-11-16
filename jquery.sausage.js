@@ -1,6 +1,6 @@
 /*!
- * lazypages (for jQuery)
- * https://github.com/christophercliff/lazypages
+ * sausages (for jQuery)
+ * https://github.com/christophercliff/sausages
  *
  * Copyright 2010, Christopher Cliff, christophercliff.com
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -8,7 +8,7 @@
  */
 ;(function($, window, document, undefined){
     
-    $.widget('ctc.lazypages', {
+    $.widget('ctc.sausage', {
         
         options: {
             current: 0
@@ -18,9 +18,9 @@
             
             var self = this;
             
-            self.$lazypages = $('<ol class="lzp-set"/>');
+            self.$sausages = $('<ol class="sausage-set"/>');
             
-            self.$lazypages
+            self.$sausages
                 .appendTo(document.body)
                 ;
             
@@ -78,19 +78,19 @@
             
             var self = this;
             
-            self.$lazypages
-                .delegate('.lzp', 'hover', function(){
+            self.$sausages
+                .delegate('.sausage', 'hover', function(){
                     
                     $(this)
-                        .toggleClass('lzp-hover')
+                        .toggleClass('sausage-hover')
                         ;
                     
                 })
-                .delegate('.lzp-a', 'click', function(e){
+                .delegate('.sausage-a', 'click', function(e){
                     e.preventDefault();
                     
-                    var $lzp = $(this).closest('.lzp'),
-                        val = $lzp.index(),
+                    var $sausage = $(this).closest('.sausage'),
+                        val = $sausage.index(),
                         o = self.element.children().eq(val).offset().top;
                     
                     $(window)
@@ -99,7 +99,7 @@
                     
                     self._trigger('onClick');
                     
-                    if ($lzp.hasClass('current'))
+                    if ($sausage.hasClass('current'))
                     {
                         return;
                     }
@@ -114,7 +114,7 @@
         _update: function (i) {
             
             var self = this;
-                c = 'lzp-current';
+                c = 'sausage-current';
             
             if (i === self.current)
             {
@@ -123,7 +123,7 @@
             
             self.current = i;
             
-            self.$lazypages.children().eq(i)
+            self.$sausages.children().eq(i)
                 .addClass(c)
             .siblings()
                 .removeClass(c)
@@ -145,7 +145,7 @@
             
             self.count = $items.length,
             
-            self.$lazypages
+            self.$sausages
                 .detach()
                 .empty()
                 ;
@@ -154,10 +154,10 @@
             {
                 $page = $items.eq(i);
                 
-                self.$lazypages.append('<li class="lzp' + ((i === self.current) ? ' lzp-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;"><a class="lzp-a" href="' + i + '"><span class="lzp-span">' + (i + 1) + '</span></a></li>');
+                self.$sausages.append('<li class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;"><a class="sausage-a" href="' + i + '"><span class="sausage-span">' + (i + 1) + '</span></a></li>');
             }
             
-            self.$lazypages
+            self.$sausages
                 .appendTo(document.body)
                 ;
             

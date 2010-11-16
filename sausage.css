@@ -1,14 +1,14 @@
-.lzp-set {
+.sausage-set {
     position: fixed; right: 0; top: 0;
     width: 15px; height: 100%;
     border-left: solid 2px #fff;
     border-right: solid 2px #fff;
 }
-    .lzp {
+    .sausage {
         position: absolute; left: 0;
         width: 100%;
     }
-        .lzp-a {
+        .sausage-a {
             display: block;
             width: 100%; height: 100%;
             background-color: #f1f1f1;
@@ -21,12 +21,12 @@
             -moz-box-shadow: inset 0px 1px 2px 4px rgba(0, 0, 0, 0.025);
             -webkit-box-shadow: inset 0px 1px 2px 4px rgba(0, 0, 0, 0.025);
         }
-        .lzp-a:hover,
-        .lzp-current .lzp-a {
+        .sausage-a:hover,
+        .sausage-current .sausage-a {
             background-color: #edf6fa;
             -moz-box-shadow: inset 0px 1px 2px 4px rgba(51, 63, 70, 0.025);
         }
-            .lzp-span {
+            .sausage-span {
                 position: absolute; left: -12px; top: 5px; z-index: 2;
                 display: none;
                 width: 15px; height: 10px;
@@ -43,6 +43,6 @@
                 -moz-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
                 -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
             }
-            .lzp-hover .lzp-span {
+            .sausage-hover .sausage-span {
                 display: block;
             }
