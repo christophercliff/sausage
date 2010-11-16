@@ -70,7 +70,8 @@
                     ran = 5,
                     $pages = $('.page-set'),
                     i = 0,
-                    index = 0;
+                    index = 0,
+                    loading = false;
                 
                 function addPage() {
                     
@@ -90,8 +91,15 @@
                 
                 $(window).scroll(function(){
                     
+                    if (loading)
+                    {
+                        return;
+                    }
+                    
                     if  ($(window).scrollTop() > $(document).height() - $(window).height() - 200)
                     {
+                        loading = true;
+                        
                         setTimeout(function(){
                             
                             addPage();
@@ -100,9 +108,9 @@
                                 .lazypages('draw')
                                 ;
                             
-                            i++;
+                            loading = false;
                             
-                        }, 500);
+                        }, 250);
                     }
                     
                 });
