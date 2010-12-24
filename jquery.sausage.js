@@ -1,6 +1,6 @@
 /*!
- * sausages (for jQuery)
- * https://github.com/christophercliff/sausages
+ * page sausage (for jQuery)
+ * https://github.com/christophercliff/sausage
  *
  * Copyright 2010, Christopher Cliff, christophercliff.com
  * Dual licensed under the MIT or GPL Version 2 licenses.
@@ -19,6 +19,7 @@
             var self = this;
             
             self.$sausages = $('<ol class="sausage-set"/>');
+            self.sausages = self.$sausages.get(0);
             
             self.$sausages
                 .appendTo(document.body)
@@ -137,11 +138,11 @@
         draw: function () {
             
             var self = this,
-                h_win = $(window).height(),
-                h_doc = $(document).height(),
+                h_win = window.innerHeight,
+                h_doc = document.body.clientHeight,
                 $items = self.element.children(),
-                i,
-                $page;
+                $page,
+                s = [];
             
             self.count = $items.length,
             
@@ -150,12 +151,14 @@
                 .empty()
                 ;
             
-            for (i = 0; i < self.count; i++)
+            for (var i = 0; i < self.count; i++)
             {
                 $page = $items.eq(i);
                 
-                self.$sausages.append('<li class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;"><a class="sausage-a" href="' + i + '"><span class="sausage-span">' + (i + 1) + '</span></a></li>');
+                s.push('<li class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;"><a class="sausage-a" href="' + i + '"><span class="sausage-span">' + (i + 1) + '</span></a></li>');
             }
+            
+            self.sausages.innerHTML = s.join('');
             
             self.$sausages
                 .appendTo(document.body)
