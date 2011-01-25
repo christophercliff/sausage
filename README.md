@@ -55,6 +55,5 @@ Future development/TODOs
 - Customizable tooltips (e.g. page name, thumbnail, etc.)
 - Blocking
 - BUG: alignment gets progressively worse as pages are added, need to investigate...
-- <del>Highlight the current page</del>
 - Scale to 100+ pages (&#8734; pages!?!?)
 - See "Issues" for more...
