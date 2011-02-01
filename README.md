@@ -51,7 +51,7 @@ Presumably, you have some callbacks available for lazy loading additional data. 
 Future development/TODOs
 -------------
 
-- Graceful degredation/cross-browser compatibility
+- Graceful degredation/cross-browser compatibility 
 - Customizable tooltips (e.g. page name, thumbnail, etc.)
 - Blocking
 - BUG: alignment gets progressively worse as pages are added, need to investigate...
