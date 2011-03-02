@@ -6,7 +6,7 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  *
  */
-;(function($, window, document, undefined){
+(function($, undefined){
     
     $.widget('ctc.sausage', {
         
@@ -52,7 +52,8 @@
         
         _events: function () {
             
-            var self = this;
+            var self = this,
+                hasScrolled = false;
             
             $(window)
                 .resize(function(){
@@ -62,15 +63,28 @@
                 })
                 .scroll(function(e){
                     
-                    var st = $(window).scrollTop(),
-                        h_win = $(window).height(),
-                        h_doc = $(document).height(),
-                        i = Math.floor((st + h_win/2)/h_doc*self.count);
-                    
-                    self._update(i);
+                    hasScrolled = true;
                     
                 })
                 ;
+            
+            // prevent crazy amounts of scroll events
+            setInterval(function(){
+                
+                if (!hasScrolled)
+                {
+                    return;
+                }
+                
+                var hasScrolled = true,
+                    st = $(window).scrollTop(),
+                    h_win = $(window).height(),
+                    h_doc = $(document).height(),
+                    i = Math.floor((st + h_win/2)/h_doc*self.count);
+                
+                self._update(i);
+                
+            }, 250);
             
             return;
         },
@@ -144,7 +158,7 @@
                 $page,
                 s = [];
             
-            self.count = $items.length,
+            self.count = $items.length;
             
             self.$sausages
                 .detach()
@@ -181,4 +195,4 @@
         
     });
     
-})(jQuery, this, this.document);
+})(jQuery);
