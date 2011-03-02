@@ -52,8 +52,9 @@
         
         _events: function () {
             
-            var self = this,
-                hasScrolled = false;
+            var self = this;
+            
+            self.hasScrolled = false;
             
             $(window)
                 .resize(function(){
@@ -63,7 +64,7 @@
                 })
                 .scroll(function(e){
                     
-                    hasScrolled = true;
+                    self.hasScrolled = true;
                     
                 })
                 ;
@@ -71,13 +72,14 @@
             // prevent crazy amounts of scroll events
             setInterval(function(){
                 
-                if (!hasScrolled)
+                if (!self.hasScrolled)
                 {
                     return;
                 }
                 
-                var hasScrolled = true,
-                    st = $(window).scrollTop(),
+                self.hasScrolled = true;
+                
+                var st = $(window).scrollTop(),
                     h_win = $(window).height(),
                     h_doc = $(document).height(),
                     i = Math.floor((st + h_win/2)/h_doc*self.count);
