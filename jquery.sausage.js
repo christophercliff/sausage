@@ -1,11 +1,8 @@
-/*!
- * page sausage (for jQuery)
- * https://github.com/christophercliff/sausage
- *
- * Copyright 2010, Christopher Cliff, christophercliff.com
- * Dual licensed under the MIT or GPL Version 2 licenses.
- *
- */
+// Copyright 2010, [Christopher Cliff](http://christophercliff.com). Dual licensed under the MIT or GPL Version 2 licenses.
+//
+// [Source](https://github.com/christophercliff/sausage)
+
+
 (function($, undefined){
     
     $.widget('ctc.sausage', {

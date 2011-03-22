@@ -1,0 +1,188 @@
+<!DOCTYPE html>  <html> <head>   <title>jquery.sausage.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jquery.sausage.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Copyright 2010, <a href="http://christophercliff.com">Christopher Cliff</a>. Dual licensed under the MIT or GPL Version 2 licenses.</p>
+
+<p><a href="https://github.com/christophercliff/sausage">Source</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">){</span>
+    
+    <span class="nx">$</span><span class="p">.</span><span class="nx">widget</span><span class="p">(</span><span class="s1">&#39;ctc.sausage&#39;</span><span class="p">,</span> <span class="p">{</span>
+        
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">current</span><span class="o">:</span> <span class="mi">0</span>
+        <span class="p">},</span>
+        
+        <span class="nx">_create</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            
+            <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;ol class=&quot;sausage-set&quot;/&gt;&#39;</span><span class="p">);</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">sausages</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span>
+                <span class="p">.</span><span class="nx">appendTo</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span>
+                <span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">);</span>
+            
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">},</span>
+        
+        <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            
+            <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">draw</span><span class="p">();</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_update</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">current</span><span class="p">);</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_events</span><span class="p">();</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_delegates</span><span class="p">();</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">(</span><span class="s1">&#39;init&#39;</span><span class="p">);</span>
+            
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">},</span>
+        
+        <span class="nx">_destroy</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            </pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>// TODO: implement destroy</p>             </td>             <td class="code">               <div class="highlight"><pre>            
+        <span class="p">},</span>
+        
+        <span class="nx">_events</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            
+            <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">hasScrolled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+            
+            <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">resize</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                    
+                    <span class="nx">self</span><span class="p">.</span><span class="nx">draw</span><span class="p">();</span>
+                    
+                <span class="p">})</span>
+                <span class="p">.</span><span class="nx">scroll</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+                    
+                    <span class="nx">self</span><span class="p">.</span><span class="nx">hasScrolled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                    
+                <span class="p">})</span>
+                <span class="p">;</span>
+            </pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>prevent crazy amounts of scroll events</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+                
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">hasScrolled</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+                
+                <span class="nx">self</span><span class="p">.</span><span class="nx">hasScrolled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+                
+                <span class="kd">var</span> <span class="nx">st</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">scrollTop</span><span class="p">(),</span>
+                    <span class="nx">h_win</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">height</span><span class="p">(),</span>
+                    <span class="nx">h_doc</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">height</span><span class="p">(),</span>
+                    <span class="nx">i</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">((</span><span class="nx">st</span> <span class="o">+</span> <span class="nx">h_win</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="nx">h_doc</span><span class="o">*</span><span class="nx">self</span><span class="p">.</span><span class="nx">count</span><span class="p">);</span>
+                
+                <span class="nx">self</span><span class="p">.</span><span class="nx">_update</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+                
+            <span class="p">},</span> <span class="mi">250</span><span class="p">);</span>
+            
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">},</span>
+        
+        <span class="nx">_delegates</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            
+            <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span>
+                <span class="p">.</span><span class="nx">delegate</span><span class="p">(</span><span class="s1">&#39;.sausage&#39;</span><span class="p">,</span> <span class="s1">&#39;hover&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+                    
+                    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+                        <span class="p">.</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;sausage-hover&#39;</span><span class="p">)</span>
+                        <span class="p">;</span>
+                    
+                <span class="p">})</span>
+                <span class="p">.</span><span class="nx">delegate</span><span class="p">(</span><span class="s1">&#39;.sausage-a&#39;</span><span class="p">,</span> <span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+                    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+                    
+                    <span class="kd">var</span> <span class="nx">$sausage</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">closest</span><span class="p">(</span><span class="s1">&#39;.sausage&#39;</span><span class="p">),</span>
+                        <span class="nx">val</span> <span class="o">=</span> <span class="nx">$sausage</span><span class="p">.</span><span class="nx">index</span><span class="p">(),</span>
+                        <span class="nx">o</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">children</span><span class="p">().</span><span class="nx">eq</span><span class="p">(</span><span class="nx">val</span><span class="p">).</span><span class="nx">offset</span><span class="p">().</span><span class="nx">top</span><span class="p">;</span>
+                    
+                    <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">)</span>
+                        <span class="p">.</span><span class="nx">scrollTop</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
+                        <span class="p">;</span>
+                    
+                    <span class="nx">self</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">(</span><span class="s1">&#39;onClick&#39;</span><span class="p">);</span>
+                    
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">$sausage</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;current&#39;</span><span class="p">))</span>
+                    <span class="p">{</span>
+                        <span class="k">return</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    
+                    <span class="nx">self</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">(</span><span class="s1">&#39;onUpdate&#39;</span><span class="p">);</span>
+                <span class="p">})</span>
+                <span class="p">;</span>
+            
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">},</span>
+        
+        <span class="nx">_update</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+            
+            <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+                <span class="nx">c</span> <span class="o">=</span> <span class="s1">&#39;sausage-current&#39;</span><span class="p">;</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">self</span><span class="p">.</span><span class="nx">current</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span><span class="p">.</span><span class="nx">children</span><span class="p">().</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">siblings</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+                <span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_trigger</span><span class="p">(</span><span class="s1">&#39;update&#39;</span><span class="p">);</span>
+            
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">},</span>
+        
+        <span class="nx">draw</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            
+            <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+                <span class="nx">h_win</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span>
+                <span class="nx">h_doc</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientHeight</span><span class="p">,</span>
+                <span class="nx">$items</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">children</span><span class="p">(),</span>
+                <span class="nx">$page</span><span class="p">,</span>
+                <span class="nx">s</span> <span class="o">=</span> <span class="p">[];</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">count</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span>
+                <span class="p">.</span><span class="nx">detach</span><span class="p">()</span>
+                <span class="p">.</span><span class="nx">empty</span><span class="p">()</span>
+                <span class="p">;</span>
+            
+            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">count</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nx">$page</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+                
+                <span class="nx">s</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;&lt;li class=&quot;sausage&#39;</span> <span class="o">+</span> <span class="p">((</span><span class="nx">i</span> <span class="o">===</span> <span class="nx">self</span><span class="p">.</span><span class="nx">current</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39; sausage-current&#39;</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&quot; style=&quot;height:&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">$page</span><span class="p">.</span><span class="nx">outerHeight</span><span class="p">()</span><span class="o">/</span><span class="nx">h_doc</span><span class="o">*</span><span class="nx">h_win</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;px;top:&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">$page</span><span class="p">.</span><span class="nx">offset</span><span class="p">().</span><span class="nx">top</span><span class="o">/</span><span class="nx">h_doc</span><span class="o">*</span><span class="nx">h_win</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;px;&quot;&gt;&lt;a class=&quot;sausage-a&quot; href=&quot;&#39;</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&lt;span class=&quot;sausage-span&quot;&gt;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">sausages</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+            
+            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span>
+                <span class="p">.</span><span class="nx">appendTo</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span>
+                <span class="p">;</span>
+            
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">},</span>
+        
+        <span class="nx">block</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>// TODO: implement block</p>             </td>             <td class="code">               <div class="highlight"><pre>            
+        <span class="p">},</span>
+        
+        <span class="nx">unblock</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            </pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>// TODO: implement unblock</p>             </td>             <td class="code">               <div class="highlight"><pre>            
+        <span class="p">}</span>
+        
+    <span class="p">});</span>
+    
+<span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
