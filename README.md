@@ -1,5 +1,3 @@
-# sausage.js
-
-A contextual pagination jQuery plugin for infinite scrolling pages.
+A contextual pagination jQuery plugin.
 
 Currently in development.
