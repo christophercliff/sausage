@@ -5,21 +5,40 @@
 
 (function($, undefined){
     
-    $.widget('ctc.sausage', {
+    $.widget('cc.sausage', {
         
+        // # options
         options: {
-            current: 0
+            
+            // ## page
+            // 
+            // a selector used to define the page set
+            
+            page: '.page',
+            
+            // ## content
+            // 
+            // a function that determines the content of the sausage link
+            
+            content: function (i, $page) {
+                return '<a class="sausage-a" href="' + i + '"><span class="sausage-span">' + (i + 1) + '</span></a>';
+            }
+            
         },
         
         _create: function () {
             
-            var self = this;
+            var self = this,
+                $el = self.element;
             
-            self.$sausages = $('<ol class="sausage-set"/>');
+            self.blocked = true,
+            self.$outer = $el,
+            self.$inner = $.isWindow(self.element.get(0)) ? $('body') : $el.children(':first-child'),
+            self.$sausages = $('<div class="sausage-set"/>');
             self.sausages = self.$sausages.get(0);
             
             self.$sausages
-                .appendTo(document.body)
+                .appendTo(self.$inner)
                 ;
             
             self._trigger('create');
@@ -36,6 +55,12 @@
             self._events();
             self._delegates();
             
+            self.blocked = false;
+            
+            self.$sausages
+                .addClass('sausage-set-init')
+                ;
+            
             self._trigger('init');
             
             return;
@@ -43,8 +68,15 @@
         
         _destroy: function () {
             
-            //// TODO: implement destroy
+            var self = this;
             
+            self.$element
+                .remove()
+                ;
+            
+            self.window
+            
+            return;
         },
         
         _events: function () {
@@ -95,17 +127,27 @@
             self.$sausages
                 .delegate('.sausage', 'hover', function(){
                     
+                    if (self.blocked)
+                    {
+                        return;
+                    }
+                    
                     $(this)
                         .toggleClass('sausage-hover')
                         ;
                     
                 })
-                .delegate('.sausage-a', 'click', function(e){
+                .delegate('.sausage', 'click', function(e){
                     e.preventDefault();
                     
-                    var $sausage = $(this).closest('.sausage'),
+                    if (self.blocked)
+                    {
+                        return;
+                    }
+                    
+                    var $sausage = $(this),
                         val = $sausage.index(),
-                        o = self.element.children().eq(val).offset().top;
+                        o = self.$inner.find(self.options.page).eq(val).offset().top;
                     
                     $(window)
                         .scrollTop(o)
@@ -130,7 +172,7 @@
             var self = this;
                 c = 'sausage-current';
             
-            if (i === self.current)
+            if (i === self.current || self.blocked)
             {
                 return;
             }
@@ -151,9 +193,9 @@
         draw: function () {
             
             var self = this,
-                h_win = window.innerHeight,
-                h_doc = document.body.clientHeight,
-                $items = self.element.children(),
+                h_win = self.$outer.height(),
+                h_doc = self.$inner.height(),
+                $items = self.$inner.find(self.options.page),
                 $page,
                 s = [];
             
@@ -168,13 +210,13 @@
             {
                 $page = $items.eq(i);
                 
-                s.push('<li class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;"><a class="sausage-a" href="' + i + '"><span class="sausage-span">' + (i + 1) + '</span></a></li>');
+                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;">' + self.options.content(i, $page) + '</div>');
             }
             
             self.sausages.innerHTML = s.join('');
             
             self.$sausages
-                .appendTo(document.body)
+                .appendTo(self.$inner)
                 ;
             
             return;
@@ -182,14 +224,30 @@
         
         block: function () {
             
-            //// TODO: implement block
+            var self = this,
+                c = 'sausage-set-blocked';
             
+            self.blocked = true;
+            
+            self.$sausages
+                .addClass(c)
+                ;
+            
+            return;
         },
         
         unblock: function () {
             
-            //// TODO: implement unblock
+            var self = this,
+                c = 'sausage-set-blocked';
             
+            self.$sausages
+                .removeClass(c)
+                ;
+            
+            self.blocked = false;
+            
+            return;
         }
         
     });
