@@ -1,3 +1,3 @@
-A contextual pagination jQuery UI Widget.
+A jQuery UI Widget for contextual pagination.
 
 Currently in development.
