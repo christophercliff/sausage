@@ -8,6 +8,8 @@
     
     $.widget('cc.sausage', {
         
+        // # Options
+        
         options: {
             
             // ### page `string`
@@ -69,6 +71,13 @@
         _init: function () {
             
             var self = this;
+            
+            if (self.$outer.scrollTop() < 1)
+            {
+                self.destroy();
+                
+                return;
+            }
             
             self.draw();
             self._update(self.options.current);
@@ -197,6 +206,8 @@
             return;
         },
         
+        // # Methods
+        
         // ### draw `.sausage("draw")`
         // 
         // Create the sausage UI.
@@ -278,7 +289,7 @@
             
             var self = this;
             
-            self.$element
+            self.element
                 .remove()
                 ;
             
