@@ -4,11 +4,12 @@
     
     <head>
         
-        <title>sausage</title>
+        <title>sausage.js</title>
         
+        <!-- apply CSS reset because we are not savages -->
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset/reset-min.css">
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css">
-        <link rel="stylesheet" type="text/css" href="https://github.com/christophercliff/sausage/raw/master/sausage.css">
+        <link rel="stylesheet" type="text/css" href="../sausage.css">
         
         <style type="text/css">
             
@@ -44,7 +45,7 @@
         
         <div id="site">
             
-            <h1>My Infinite Scrolling Blog</h1>
+            <h1>My Infinite Scrolling Blog (500 draws: <span id="out"></span>)</h1>
             
             <ol class="page-set">
                 
@@ -52,9 +53,9 @@
             
         </div>
         
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="https://github.com/christophercliff/sausage/raw/master/jquery.sausage.js"></script>
+        <script type="text/javascript" src="../lib/jquery-1.5.1.js"></script>
+        <script type="text/javascript" src="../lib/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="../jquery.sausage.js"></script>
         
         <script type="text/javascript">
             
@@ -104,7 +105,7 @@
                             
                             addPage();
 
-                            $pages
+                            $(window)
                                 .sausage('draw')
                                 ;
                             
@@ -121,9 +122,25 @@
                     
                 */
                 
-                $pages
+                $(window)
                     .sausage()
                     ;
+                
+                function t() {  
+                    var time = new Date();  
+                    return time.getTime();  
+                }
+                
+                var s = t();   
+                
+                for (var i = 0; i < 50; i++)
+                {  
+                    $(window)
+                        .sausage('draw')
+                        ;
+                }
+                
+                $('#out').append((t() - s) + 'ms');
                 
             }());
             

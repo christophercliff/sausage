@@ -1,0 +1,169 @@
+<!doctype html>
+
+<html>
+    
+    <head>
+        
+        <title>sausage.js</title>
+        
+        <!-- apply CSS reset because we are not savages -->
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset/reset-min.css">
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css">
+        <link rel="stylesheet" type="text/css" href="sausage.css">
+        
+        <style type="text/css">
+            
+            body {
+                overflow-y: scroll;
+            }
+                #app {
+                    width: 550px;
+                    margin: 50px auto;
+                    color: #252519;
+                    font-family: Georgia, serif;
+                }
+                    h1 {
+                        width: 372px; height: 0; overflow: hidden;
+                        padding-top: 258px; margin: 0 auto 48px;
+                        background: url('lib/logo.png');
+                    }
+                    h2 {
+                        margin-bottom: 24px;
+                        font-size: 24px; line-height: 24px;
+                    }
+
+                            
+                            p {
+                            width: 550px;
+                            font-size: 16px; line-height: 24px;
+                            margin-bottom: 1em;
+                            }
+                            #documentation p {
+                            margin-bottom: 4px;
+                            }
+                            a, a:visited {
+                            padding: 0 2px;
+                            text-decoration: none;
+                            background: #fbd4da;
+                            color: #252519;
+                            }
+                            a:active, a:hover {
+                            color: #000;
+                            background: #f79f9e;
+                            }
+                            h1, h2, h3, h4, h5, h6 {
+                            margin-top: 40px;
+                            }
+                            b.header {
+                            font-size: 18px;
+                            }
+                            span.alias {
+                            font-size: 14px;
+                            font-style: italic;
+                            margin-left: 20px;
+                            }
+                            table, tr, td {
+                            margin: 0 0 24px; padding: 0;
+                            }
+                            td {
+                            padding: 2px 12px 2px 0;
+                            }
+                            code, pre, tt {
+                            font-family: Monaco, Consolas, "Lucida Console", monospace;
+                            font-size: 12px;
+                            line-height: 18px;
+                            color: #808285;
+                            }
+                            code {
+                            margin-left: 20px;
+                            }
+                            pre {
+                            font-size: 12px;
+                            padding: 2px 0 2px 12px;
+                            border-left: 6px solid #e6e7e8;
+                            margin: 0px 0 30px;
+                            }
+            
+        </style>
+        
+    </head>
+    
+    <body>
+        
+        <div id="app">
+            
+            <ol class="section-set">
+                <li class="section" data-name="Home">
+                    
+                    <h1>sausage.js</h1>
+                    
+                    <p>Sausage is a jQuery UI widget for contextual pagination. It complements long or infinite-scrolling pages by keeping the user informed of their location within the document. The best way to understand how Sausage works is to <a href="examples/first.html">view</a> <a href="examples/first.html">some</a> <a href="examples/first.html">examples</a>.</p>
+                    
+                    <p>A complete <a href="tests/index.html">test &amp; benchmark suite</a> is included. You may also read through the <a href="docs/jquery.sausage.html">annotated source code</a> or visit the project page on <a href="http://github.com/christophercliff/sausage/">GitHub</a>. You can report bugs and discuss features on the <a href="http://github.com/christophercliff/sausage/issues">issues page</a>, or send tweets to <a href="http://twitter.com/sausagejs">@sausagejs</a>.</p>
+                    
+                </li>
+                <li class="section" data-name="Downloads &amp; Dependencies">
+                    
+                    <h2>Downloads &amp; Dependencies <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
+                
+                    <table>
+                      <tr>
+                        <td><a href="jquery.sausage.js">Development Version (0.1.0)</a></td>
+                        <td><i>28kb, Uncompressed with Comments</i></td>
+                      </tr>
+                      <tr>
+                        <td><a href="jquery.sausage-min.js">Production Version (0.1.0)</a></td>
+                        <td><i>3kb, Minified and Gzipped</i></td>
+                      </tr>
+                      
+                    </table>
+                    
+                    <p>Sausage depends on both <a href="http://jquery.com">jQuery</a> and the <a href="http://jqueryui.com">jQuery UI</a> widget factory.</p>
+                    
+                </li>
+                <li class="section" data-name="Get Started">
+                    
+                    <h2>Get Started</h2>
+                    
+                    <p>To use, just apply <tt>.sausage()</tt> to <tt>window</tt>.</p>
+                    
+<pre>
+$(window).sausage();</pre>
+                    
+                    <div>For more advanced usage, refer to the <a href="examples">examples</a> or view the <a href="docs/jquery.sausage.html">annotated source</a>.</p>
+                    
+                </li>
+                <li class="section" data-name="Change Log">
+                    
+                    <h2>Change Log</h2>
+                    
+                </li>
+            </ol>
+            
+            Logo design by <a href="http://toposgraphics.com">Topos Graphics</a>
+            
+        </div><!-- /app -->
+        
+        <script type="text/javascript" src="lib/jquery-1.5.1.js"></script>
+        <script type="text/javascript" src="lib/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="jquery.sausage.js"></script>
+        <script type="text/javascript">
+            
+            $(function(){
+                
+                $(window)
+                    .sausage({
+                        page: '.section',
+                        content: function (i, $page) {
+                            return '<a class="sausage-a" href="#' + i + '"><span class="sausage-span">' + $page.data('name') + '</span></a>';
+                        }
+                    })
+                    ;
+                
+            });
+            
+        </script>
+        
+    </body>
+    
+</html>
