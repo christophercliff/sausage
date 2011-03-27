@@ -9,6 +9,8 @@
     $.widget('cc.sausage', {
         
         // # Options
+        //
+        //
         
         options: {
             
@@ -46,6 +48,13 @@
             
         },
         
+        // # Private Methods
+        //
+        //
+        
+        // ## ._create()
+        //
+        //
         _create: function () {
             
             var self = this,
@@ -68,6 +77,9 @@
             return;
         },
         
+        // ## ._init()
+        //
+        //
         _init: function () {
             
             var self = this;
@@ -95,6 +107,9 @@
             return;
         },
         
+        // ## ._events()
+        //
+        //
         _events: function () {
             
             var self = this;
@@ -136,6 +151,9 @@
             return;
         },
         
+        // ## ._delegates()
+        //
+        //
         _delegates: function () {
             
             var self = this;
@@ -183,6 +201,9 @@
             return;
         },
         
+        // ## ._update()
+        //
+        //
         _update: function (i) {
             
             var self = this;
@@ -206,7 +227,9 @@
             return;
         },
         
-        // # Methods
+        // # Public Methods
+        //
+        //
         
         // ### draw `.sausage("draw")`
         // 
