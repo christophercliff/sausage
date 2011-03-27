@@ -60,11 +60,10 @@
             var self = this,
                 $el = self.element;
             
-            self.blocked = true,
             // Use $el for the outer element.
-            self.$outer = $el,
+            self.$outer = $el;
             // Use `body` for the inner element if the outer element is `window`. Otherwise, use the first child of `$el`.
-            self.$inner = $.isWindow(self.element.get(0)) ? $('body') : $el.children(':first-child'),
+            self.$inner = $.isWindow(self.element.get(0)) ? $('body') : $el.children(':first-child');
             self.$sausages = $('<div class="sausage-set"/>');
             self.sausages = self.$sausages.get(0);
             
@@ -86,13 +85,13 @@
             
             if (self.$outer.scrollTop() < 1)
             {
-                self.destroy();
+                //self.destroy();
                 
-                return;
+                //return;
             }
             
             self.draw();
-            self._update(self.options.current);
+            self._update();
             self._events();
             self._delegates();
             
@@ -137,18 +136,27 @@
                     return;
                 }
                 
-                self.hasScrolled = true;
+                self.hasScrolled = false;
                 
-                var st = $(window).scrollTop(),
-                    h_win = $(window).height(),
-                    h_doc = $(document).height(),
-                    i = Math.floor((st + h_win/2)/h_doc*self.count);
-                
-                self._update(i);
+                self._update();
                 
             }, 250);
             
             return;
+        },
+        
+        // ## ._getCurrent()
+        //
+        //
+        _getCurrent: function () {
+            
+            var self = this,
+                st = self.$outer.scrollTop(),
+                h_win = self.$outer.height(),
+                h_doc = self.$inner.height(),
+                i = Math.floor((st + h_win/2)/h_doc*self.count);
+            
+            return i;
         },
         
         // ## ._delegates()
@@ -204,9 +212,10 @@
         // ## ._update()
         //
         //
-        _update: function (i) {
+        _update: function () {
             
             var self = this;
+                i = self._getCurrent(),
                 c = 'sausage-current';
             
             if (i === self.current || self.blocked)

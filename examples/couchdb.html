@@ -1,0 +1,535 @@
+<!doctype html>
+
+    <html><head><title>The Core API</title>
+
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="http://guide.couchdb.org/style.css">
+
+    <link rel="prev" href="tour.html">
+
+    <link rel="next" href="design.html">
+    
+    </head>
+    <body class="complete">
+        
+        <div class="sausagejs">
+            
+            <link rel="stylesheet" type="text/css" href="../lib/sausage-couchdb.css">
+            <style type="text/css">
+                
+                .sausagejs {
+                    /*background-color: #2a2a2a;
+                    -moz-box-shadow: inset 0px 0px 30px 20px rgba(0, 0, 0, 0.25);*/
+                }
+                    .sausagejs-content {
+                        width: 520px;
+                        padding: 20px; margin: 0 auto;
+                    }
+                    .sausagejs-description {
+                        margin-bottom: 1.5em;
+                    }
+                    .sausagejs-code {
+                        
+                    }
+                
+            </style>
+            <script type="text/javascript" src="../lib/jquery-1.5.1.js"></script>
+            <script type="text/javascript" src="../lib/jquery.ui.widget.js"></script>
+            <script type="text/javascript" src="../jquery.sausage.js"></script>
+            <script type="text/javascript">
+                
+                $(function(){
+                    
+                    $(window)
+                        .sausage({
+                            content: function (i, $page) {
+                                return '<a class="sausage-a" href="#' + i + '"><span class="sausage-span">' + $page.find('.anchor').first().text() + '</span></a>';
+                            }
+                        })
+                        ;
+                    
+                });
+                
+            </script>
+            
+            <!--<div class="sausagejs-content">
+                
+                <div class="sausagejs-description">This is a sausage.js example page.</div>
+                
+<pre class="sausagejs-code">
+$(window)
+    .sausage({
+        content: function (i, $page) {
+            return '<a class="sausage-a" href="#' + i + '"><span class="sausage-span">' + $page.find('.anchor').first().text() + '</span></a>';
+        }
+    })
+    ;</pre>
+                
+            </div>
+            
+        </div>-->
+        
+        <div class="container">                  <div class="page_header">        <h1 class="logo">          <a href="../../../index.html" title="home">CouchDB <span>The Definitive Guide</span></a>        </h1>        <div class="search_box">          <form class="search" action="http://www.google.com/search">            <input name="as_sitesearch" value="guide.couchdb.org" type="hidden">            <input name="as_q" value="" class="search_field" type="text">            <input value="Search" class="search_btn" type="submit">          </form>        </div>      </div>                <div class="notice"></div>            <div class="inner wrap">              <div class="sidebar">              <h3><a href="../../../index.html">Home</a></h3><h3><a href="index.html">Edition 1 (English)</a></h3><h3><a href="tour.html">Previous Page</a></h3><h3><a href="design.html">Next Page</a></h3><h3>Home</h3><ul><li><a href="#api">The Core API</a><ul><li><a href="#server">Server</a></li><li><a href="#databases">Databases</a></li><li><a href="#documents">Documents</a><ul><li><a href="#revisions">Revisions</a></li><li><a href="#detail">Documents in Detail</a><ul><li><a href="#attachments">Attachments</a></li></ul></li><li><a href="#replication">Replication</a></li><li><a href="#wrap">Wrapping Up</a></li></ul></li></ul></li></ul></div>              <div class="content body"></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#api"><h2 id="api">The Core API</h2></a>
+
+    <p>This chapter explores the CouchDB in minute detail. It shows all the nitty-gritty and clever bits. We show you best practices and guide you around common pitfalls.
+
+    </p><p>We start out by revisiting the basic operations we ran in the last chapter, looking behind the scenes. We also show what Futon needs to do behind its user interface to give us the nice features we saw earlier.
+
+    </p><p>This chapter is both an introduction to the core CouchDB API as well as a reference. If you can’t remember how to run a particular request or why some parameters are needed, you can always come back here and look things up (we are probably the heaviest users of this chapter).
+
+    </p><p>While explaining the API bits and pieces, we sometimes need to take a larger detour to explain the reasoning for a particular request. This is a good opportunity for us to tell you why CouchDB works the way it does.
+
+    </p><p>The API can be subdivided into the following sections. We’ll explore them individually:
+
+    </p><ul>
+
+    <li>Server</li>
+
+    <li>Databases</li>
+
+    <li>Documents</li>
+
+    <li>Replication</li>
+
+    </ul>
+
+    </div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#server"><h3 id="server">Server</h3></a>
+
+    <p>This one is basic and simple. It can serve as a sanity check to see if CouchDB is running at all. It can also act as a safety guard for libraries that require a certain version of CouchDB. We’re using the <code>curl</code> utility again:
+
+    </p><pre>curl http://127.0.0.1:5984/
+    </pre>
+
+    <p>CouchDB replies, all excited to get going:
+
+    </p><pre>{"couchdb":"Welcome","version":"0.10.1"}
+
+    </pre>
+
+    <p>You get back a JSON string, that, if parsed into a native object or data structure of your programming language, gives you access to the welcome string and version information.
+
+    </p><p>This is not terribly useful, but it illustrates nicely the way CouchDB behaves. You send an HTTP request and you receive a JSON string in the HTTP response as a result.
+
+    </p></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#databases"><h3 id="databases">Databases</h3></a>
+
+    <p>Now let’s do something a little more useful: create databases. For the strict, CouchDB is a <em>database management system</em> (DMS). That means it can hold multiple <em>databases</em>. A database is a bucket that holds “related data.” We’ll explore later what that means exactly. In practice, the terminology is overlapping—often people refer to a DMS as “a database” and also a database within the DMS as “a database.” We might follow that slight oddity, so don’t get confused by it. In general, it should be clear from the context if we are talking about the whole of CouchDB or a single database within CouchDB.
+
+    </p><p>Now let’s make one! We want to store our favorite music albums, and we creatively give our database the name <code>albums</code>. Note that we’re now using the <code>-X</code> option again to tell <code>curl</code> to send a <code>PUT</code> request instead of the default <code>GET</code> request:
+
+
+    </p><pre>curl -X PUT http://127.0.0.1:5984/albums
+    </pre>
+
+    <p>CouchDB replies:
+
+    </p><pre>{"ok":true}
+    </pre>
+
+    <p>That’s it. You created a database and CouchDB told you that all went well. What happens if you try to create a database that already exists? Let’s try to create that database again:
+
+    </p><pre>curl -X PUT http://127.0.0.1:5984/albums
+    </pre>
+
+    <p>CouchDB replies:
+
+    </p><pre>{"error":"file_exists","reason":"The database could not be created, the file already exists."}
+    </pre>
+
+    <p>We get back an error. This is pretty convenient. We also learn a little bit about how CouchDB works. CouchDB stores each database in a single file. Very simple. This has some consequences down the road, but we’ll skip the details for now and explore the underlying storage system in <a href="btree.html">Appendix F, The Power of B-trees</a>.
+
+
+    </p><p>Let’s create another database, this time with <code>curl</code>’s <code>-v</code> (for “verbose”) option. The verbose option tells <code>curl</code> to show us not only the essentials—the HTTP response body—but all the underlying request and response details:
+
+    </p><pre>curl -vX PUT http://127.0.0.1:5984/albums-backup
+    </pre>
+
+    <p><code>curl</code> elaborates:
+
+    </p><pre>* About to connect() to 127.0.0.1 port 5984 (#0)
+    *   Trying 127.0.0.1... connected
+    * Connected to 127.0.0.1 (127.0.0.1) port 5984 (#0)
+    &gt; PUT /albums-backup HTTP/1.1
+
+    &gt; User-Agent: curl/7.16.3 (powerpc-apple-darwin9.0) libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3
+    &gt; Host: 127.0.0.1:5984
+    &gt; Accept: */*
+    &gt;
+    &lt; HTTP/1.1 201 Created
+    &lt; Server: CouchDB/0.9.0 (Erlang OTP/R12B)
+    &lt; Date: Sun, 05 Jul 2009 22:48:28 GMT
+    &lt; Content-Type: text/plain;charset=utf-8
+    &lt; Content-Length: 12
+
+    &lt; Cache-Control: must-revalidate
+    &lt;
+    {"ok":true}
+    * Connection #0 to host 127.0.0.1 left intact
+    * Closing connection #0
+    </pre>
+
+    <p>What a mouthful. Let’s step through this line by line to understand what’s going on and find out what’s important. Once you’ve seen this output a few times, you’ll be able to spot the important bits more easily.
+
+    </p><pre>* About to connect() to 127.0.0.1 port 5984 (#0)
+    </pre>
+
+    <p>This is <code>curl</code> telling us that it is going to establish a <em>TCP</em> connection to the CouchDB server we specified in our request URI. Not at all important, except when debugging networking issues.
+
+
+    </p><pre>*   Trying 127.0.0.1... connected
+    * Connected to 127.0.0.1 (127.0.0.1) port 5984 (#0)
+    </pre>
+
+    <p><code>curl</code> tells us it successfully connected to CouchDB. Again, not important if you aren’t trying to find problems with your network.
+
+    </p><p>The following lines are prefixed with <code>&gt;</code> and <code>&lt;</code> characters. <code>&gt;</code> means the line was sent to CouchDB verbatim (without the actual <code>&gt;</code>). <code>&lt;</code> means the line was sent back to <code>curl</code> by CouchDB.
+
+
+    </p><pre>&gt; PUT /albums-backup HTTP/1.1
+    </pre>
+
+    <p>This initiates an HTTP request. Its <em>method</em> is <code>PUT</code>, the <em>URI</em> is <code>/albums-backup</code>, and the HTTP version is <code>HTTP/1.1</code>. There is also <code>HTTP/1.0</code>, which is simpler in some cases, but for all practical reasons you should be using <code>HTTP/1.1</code>.
+
+
+    </p><p>Next, we see a number of <em>request headers</em>. These are used to provide additional details about the request to CouchDB.
+
+    </p><pre>&gt; User-Agent: curl/7.16.3 (powerpc-apple-darwin9.0) libcurl/7.16.3 OpenSSL/0.9.7l zlib/1.2.3
+    </pre>
+
+    <p>The <code>User-Agent</code> header tell CouchDB which piece of client software is doing the HTTP request. We don’t learn anything new: it’s <code>curl</code>. This header is often useful in web development when there are known errors in client implementations that a server might want to prepare the response for. It also helps to determine which platform a user is on. This information can be used for technical and statistical reasons. For CouchDB, the <code>User-Agent</code> header is irrelevant.
+
+    </p><pre>&gt; Host: 127.0.0.1:5984
+
+    </pre>
+
+    <p>The <code>Host</code> header is required by HTTP 1.1. It tells the server the hostname that came with the request.
+
+    </p><pre>&gt; Accept: */*
+    </pre>
+
+    <p>The <code>Accept</code> header tells CouchDB that <code>curl</code> accepts any media type. We’ll look into why this is useful a little later.
+
+
+    </p><pre>&gt;
+    </pre>
+
+    <p>An empty line denotes that the request headers are now finished and the rest of the request contains data we’re sending to the server. In this case, we’re not sending any data, so the rest of the curl output is dedicated to the HTTP response.
+
+    </p><pre>&lt; HTTP/1.1 201 Created
+    </pre>
+
+    <p>The first line of CouchDB’s HTTP response includes the HTTP version information (again, to acknowledge that the requested version could be processed), an HTTP <em>status code</em>, and a <em>status code message</em>. Different requests trigger different response codes. There’s a whole range of them telling the client (<code>curl</code> in our case) what effect the request had on the server. Or, if an error occurred, what kind of error. RFC 2616 (the HTTP 1.1 specification) defines clear behavior for response codes. CouchDB fully follows the RFC.
+
+    </p><p>The <em>201 Created</em> status code tells the client that the resource the request was made against was successfully created. No surprise here, but if you remember that we got an error message when we tried to create this database twice, you now know that this response could include a different response code. Acting upon responses based on response codes is a common practice. For example, all response codes of 400 or larger tell you that some error occurred. If you want to shortcut your logic and immediately deal with the error, you could just check a <code>&gt;= 400</code> response code.
+
+
+    </p><pre>&lt; Server: CouchDB/0.10.1 (Erlang OTP/R13B)
+    </pre>
+
+    <p>The <code>Server</code> header is good for diagnostics. It tells us which CouchDB version and which underlying Erlang version we are talking to. In general, you can ignore this header, but it is good to know it’s there if you need it.
+
+    </p><pre>&lt; Date: Sun, 05 Jul 2009 22:48:28 GMT
+    </pre>
+
+    <p>The <code>Date</code> header tells you the time of the server. Since client and server time are not necessary synchronized, this header is purely informational. You shouldn’t build any critical application logic on top of this!
+
+    </p><pre>&lt; Content-Type: text/plain;charset=utf-8
+
+    </pre>
+
+    <p>The <code>Content-Type</code> header tells you which MIME type the HTTP response body is and its encoding. We already know CouchDB returns JSON strings. The appropriate <code>Content-Type</code> header is <code>application/json</code>. Why do we see <code>text/plain</code>? This is where pragmatism wins over purity. Sending an <code>application/json</code> <code>Content-Type</code> header will make a browser offer you the returned JSON for download instead of just displaying it. Since it is extremely useful to be able to test CouchDB from a browser, CouchDB sends a <code>text/plain</code> content type, so all browsers will display the JSON as text.
+
+
+    </p><p>There are some browser extensions that make your browser JSON-aware, but they are not installed by default.
+
+    </p><p>Do you remember the <code>Accept</code> request header and how it is set to <code>\*/\* -&gt; */*</code> to express interest in any MIME type? If you send <code>Accept: application/json</code> in your request, CouchDB knows that you can deal with a pure JSON response with the proper <code>Content-Type</code> header and will use it instead of <code>text/plain</code>.
+
+
+    </p><pre>&lt; Content-Length: 12
+    </pre>
+
+    <p>The <code>Content-Length</code> header simply tells us how many bytes the response body has.
+
+    </p><pre>&lt; Cache-Control: must-revalidate
+    </pre>
+
+    <p>This <code>Cache-Control</code> header tells you, or any proxy server between CouchDB and you, not to cache this response.
+
+    </p><pre>&lt;
+
+    </pre>
+
+    <p>This empty line tells us we’re done with the response headers and what follows now is the response body.
+
+    </p><pre>{"ok":true}
+    </pre>
+
+    <p>We’ve seen this before.
+
+    </p><pre>* Connection #0 to host 127.0.0.1 left intact
+    * Closing connection #0
+    </pre>
+
+    <p>The last two lines are <code>curl</code> telling us that it kept the TCP connection it opened in the beginning open for a moment, but then closed it after it received the entire response.
+
+    </p><p>Throughout the book, we’ll show more requests with the <code>-v</code> option, but we’ll omit some of the headers we’ve seen here and include only those that are important for the particular request.
+
+
+    </p><p>Creating databases is all fine, but how do we get rid of one? Easy—just change the HTTP method:
+
+    </p><pre>&gt; curl -vX DELETE http://127.0.0.1:5984/albums-backup
+    </pre>
+
+    <p>This deletes a CouchDB database. The request will remove the file that the database contents are stored in. There is no “Are you sure?” safety net or any “Empty the trash” magic you’ve got to do to delete a database. Use this command with care. Your data will be deleted without a chance to bring it back easily if you don’t have a backup copy.
+
+    </p><p>This section went knee-deep into HTTP and set the stage for discussing the rest of the core CouchDB API. Next stop: documents.
+
+    </p></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#documents"><h3 id="documents">Documents</h3></a>
+
+    <p>Documents are CouchDB’s central data structure. The idea behind a document is, unsurprisingly, that of a real-world document—a sheet of paper such as an invoice, a recipe, or a business card. We already learned that CouchDB uses the JSON format to store documents. Let’s see how this storing works at the lowest level.
+
+    </p><p>Each document in CouchDB has an <em>ID</em>. This ID is unique per database. You are free to choose any string to be the ID, but for best results we recommend a UUID (or GUID), i.e., a Universally (or Globally) Unique IDentifier. UUIDs are random numbers that have such a low collision probability that everybody can make thousands of UUIDs a minute for millions of years without ever creating a duplicate. This is a great way to ensure two independent people cannot create two different documents with the same ID. Why should you care what somebody else is doing? For one, that somebody else could be you at a later time or on a different computer; secondly, CouchDB replication lets you share documents with others and using UUIDs ensures that it all works. But more on that later; let’s make some documents:
+
+    </p><pre>curl -X PUT http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af -d '{"title":"There is Nothing Left to Lose","artist":"Foo Fighters"}'
+    </pre>
+
+    <p>CouchDB replies:
+
+    </p><pre>{"ok":true,"id":"6e1295ed6c29495e54cc05947f18c8af","rev":"1-2902191555"}
+    </pre>
+
+    <p>The <code>curl</code> command appears complex, but let’s break it down. First, <code>-X PUT</code> tells <code>curl</code> to make a PUT request. It is followed by the URL that specifies your CouchDB IP address and port. The resource part of the URL <code>/albums/6e1295ed6c29495e54cc05947f18c8af</code> specifies the location of a document inside our <code>albums</code> database. The wild collection of numbers and characters is a UUID. This UUID is your document’s ID. Finally, the <code>-d</code> flag tells <code>curl</code> to use the following string as the body for the PUT request. The string is a simple JSON structure including <code>title</code> and <code>artist</code> attributes with their respective values.
+
+
+    </p><div class="aside note">
+
+    <p>If you don’t have a UUID handy, you can ask CouchDB to give you one (in fact, that is what we did just now without showing you). Simply send a GET request to <code>/_uuids</code>:
+
+    </p><pre>curl -X GET http://127.0.0.1:5984/_uuids
+    </pre>
+
+    <p>CouchDB replies:
+
+    </p><pre>{"uuids":["6e1295ed6c29495e54cc05947f18c8af"]}
+    </pre>
+
+    <p>Voilá, a UUID. If you need more than one, you can pass in the <code>?count=10</code> HTTP parameter to request 10 UUIDs, or really, any number you need.
+
+    </p></div>
+
+    <p>To double-check that CouchDB isn’t lying about having saved your document (it usually doesn’t), try to retrieve it by sending a GET request:
+
+    </p><pre>curl -X GET http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af
+    </pre>
+
+    <p>We hope you see a pattern here. Everything in CouchDB has an address, a URI, and you use the different HTTP methods to operate on these URIs.
+
+    </p><p>CouchDB replies:
+
+    </p><pre>{"_id":"6e1295ed6c29495e54cc05947f18c8af","_rev":"1-2902191555","title":"There is Nothing Left to Lose","artist":"Foo Fighters"}
+    </pre>
+
+    <p>This looks a lot like the document you asked CouchDB to save, which is good. But you should notice that CouchDB added two fields to your JSON structure. The first is <code>_id</code>, which holds the UUID we asked CouchDB to save our document under. We always know the ID of a document if it is included, which is very convenient.
+
+    </p><p>The second field is <code>_rev</code>. It stands for <em>revision</em>.
+
+
+    </p></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#revisions"><h4 id="revisions">Revisions</h4></a>
+
+    <p>If you want to change a document in CouchDB, you don’t tell it to go and find a field in a specific document and insert a new value. Instead, you load the full document out of CouchDB, make your changes in the JSON structure (or object, when you are doing actual programming), and save the entire new revision (or version) of that document back into CouchDB. Each revision is identified by a new <code>_rev</code> value.
+
+    </p><p>If you want to update or delete a document, CouchDB expects you to include the <code>_rev</code> field of the revision you wish to change. When CouchDB accepts the change, it will generate a new revision number. This mechanism ensures that, in case somebody else made a change unbeknownst to you before you got to request the document update, CouchDB will not accept your update because you are likely to overwrite data you didn’t know existed. Or simplified: whoever saves a change to a document first, wins. Let’s see what happens if we don’t provide a <code>_rev</code> field (which is equivalent to providing a outdated value):
+
+    </p><pre>curl -X PUT http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af -d '{"title":"There is Nothing Left to Lose","artist":"Foo Fighters","year":"1997"}'
+    </pre>
+
+    <p>CouchDB replies:
+
+    </p><pre>{"error":"conflict","reason":"Document update conflict."}
+    </pre>
+
+    <p>If you see this, add the latest revision number of your document to the JSON structure:
+
+    </p><pre>curl -X PUT http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af -d '{"_rev":"1-2902191555","title":"There is Nothing Left to Lose", "artist":"Foo Fighters","year":"1997"}'
+    </pre>
+
+    <p>Now you see why it was handy that CouchDB returned that <code>_rev</code> when we made the initial request. CouchDB replies:
+
+    </p><pre>{"ok":true,"id":"6e1295ed6c29495e54cc05947f18c8af","rev":"2-2739352689"}
+    </pre>
+
+    <p>CouchDB accepted your write and also generated a new revision number. The revision number is the md5 hash of the transport representation of a document with an <code>N-</code> prefix denoting the number of times a document got updated. This is useful for replication. See <a href="conflicts.html">Chapter 17, Conflict Management</a> for more information.
+
+
+    </p><p>There are multiple reasons why CouchDB uses this revision system, which is also called Multi-Version Concurrency Control (MVCC). They all work hand-in-hand, and this is a good opportunity to explain some of them.
+
+    </p><p>One of the aspects of the HTTP protocol that CouchDB uses is that it is <em>stateless</em>. What does that mean? When talking to CouchDB you need to <em>make requests</em>. Making a request includes opening a network connection to CouchDB, exchanging bytes, and closing the connection. This is done every time you make a request. Other protocols allow you to open a connection, exchange bytes, keep the connection open, exchange more bytes later—maybe depending on the bytes you exchanged at the beginning—and eventually close the connection. Holding a connection open for later use requires the server to do extra work. One common pattern is that for the lifetime of a connection, the client has a consistent and static view of the data on the server. Managing huge amounts of parallel connections is a significant amount of work. HTTP connections are usually short-lived, and making the same guarantees is a lot easier. As a result, CouchDB can handle many more concurrent connections.
+
+    </p><p>Another reason CouchDB uses MVCC is that this model is simpler conceptually and, as a consequence, easier to program. CouchDB uses less code to make this work, and less code is always good because the ratio of defects per lines of code is static.
+
+    </p><p>The revision system also has positive effects on replication and storage mechanisms, but we’ll explore these later in the book.
+
+    </p><div class="aside warning">
+
+    <p>The terms <em>version</em> and <em>revision</em> might sound familiar (if you are programming without version control, drop this book right now and start learning one of the popular systems). Using new versions for document changes works a lot like version control, but there’s an important difference: CouchDB does <em>not</em> guarantee that older versions are kept around.
+
+
+    </p></div>
+
+    </div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#detail"><h4 id="detail">Documents in Detail</h4></a>
+
+    <p>Now let’s have a closer look at our document creation requests with the <code>curl</code> <code>-v</code> flag that was helpful when we explored the database API earlier. This is also a good opportunity to create more documents that we can use in later examples.
+
+    </p><p>We’ll add some more of our favorite music albums. Get a fresh UUID from the <code>/_uuids</code> resource. If you don’t remember how that works, you can look it up a few pages back.
+
+    </p><pre>curl -vX PUT http://127.0.0.1:5984/albums/70b50bfa0a4b3aed1f8aff9e92dc16a0 -d '{"title":"Blackened Sky","artist":"Biffy Clyro","year":2002}'
+    </pre>
+
+    <div class="aside note">
+
+    <p>By the way, if you happen to know more information about your favorite albums, don’t hesitate to add more properties. And don’t worry about not knowing all the information for all the albums. CouchDB’s schema-less documents can contain whatever you know. After all, you should relax and not worry about data.
+
+    </p></div>
+
+    <p>Now with the <code>-v</code> option, CouchDB’s reply (with only the important bits shown) looks like this:
+
+    </p><pre>&gt; PUT /albums/70b50bfa0a4b3aed1f8aff9e92dc16a0 HTTP/1.1
+    &gt;
+    &lt; HTTP/1.1 201 Created
+    &lt; Location: http://127.0.0.1:5984/albums/70b50bfa0a4b3aed1f8aff9e92dc16a0
+
+    &lt; Etag: "1-2248288203"
+    &lt;
+    {"ok":true,"id":"70b50bfa0a4b3aed1f8aff9e92dc16a0","rev":"1-2248288203"}
+    </pre>
+
+    <p>We’re getting back the <code>201 Created</code> HTTP status code in the response headers, as we saw earlier when we created a database. The <code>Location</code> header gives us a full URL to our newly created document. And there’s a new header. An Etag in HTTP-speak identifies a specific version of a resource. In this case, it identifies a specific version (the first one) of our new document. Sound familiar? Yes, conceptually, an Etag is the same as a CouchDB document revision number, and it shouldn’t come as a surprise that CouchDB uses revision numbers for Etags. Etags are useful for caching infrastructures. We’ll learn how to use them in <a href="show.html">Chapter 8, Show Functions</a>.
+
+    </p></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#attachments"><h5 id="attachments">Attachments</h5></a>
+
+    <p>CouchDB documents can have attachments just like an email message can have attachments. An attachment is identified by a name and includes its MIME type (or Content-Type) and the number of bytes the attachment contains. Attachments can be any data. It is easiest to think about attachments as files attached to a document. These files can be text, images, Word documents, music, or movie files. Let’s make one.
+
+    </p><p>Attachments get their own URL where you can upload data. Say we want to add the album artwork to the <code>6e1295ed6c29495e54cc05947f18c8af</code> document (“There is Nothing Left to Lose”), and let’s also say the artwork is in a file <code>artwork.jpg</code> in the current directory:
+
+    </p><pre>&gt; curl -vX PUT http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af/ artwork.jpg?rev=2-2739352689 --data-binary @artwork.jpg -H "Content-Type: image/jpg"
+    </pre>
+
+    <p>The <code>-d@</code> option tells <code>curl</code> to read a file’s contents into the HTTP request body. We’re using the <code>-H</code> option to tell CouchDB that we’re uploading a JPEG file. CouchDB will keep this information around and will send the appropriate header when requesting this attachment; in case of an image like this, a browser will render the image instead of offering you the data for download. This will come in handy later. Note that you need to provide the current revision number of the document you’re attaching the artwork to, just as if you would update the document. Because, after all, attaching some data is changing the document.
+
+
+    </p><p>You should now see your artwork image if you point your browser to <code>http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af/artwork.jpg</code>.
+
+    </p><p>If you request the document again, you’ll see a new member:
+
+    </p><pre>curl http://127.0.0.1:5984/albums/6e1295ed6c29495e54cc05947f18c8af
+    </pre>
+
+    <p>CouchDB replies:
+
+    </p><pre>{"_id":"6e1295ed6c29495e54cc05947f18c8af","_rev":"3-131533518","title": "There is Nothing Left to Lose","artist":"Foo Fighters","year":"1997","_attachments":{"artwork.jpg":{"stub":true,"content_type":"image/jpg","length":52450}}}
+    </pre>
+
+    <p><code>_attachments</code> is a list of keys and values where the values are JSON objects containing the attachment metadata. <code>stub=true</code> tells us that this entry is just the metadata. If we use the <code>?attachments=true</code> HTTP option when requesting this document, we’d get a Base64-encoded string containing the attachment data.
+
+
+    </p><p>We’ll have a look at more document request options later as we explore more features of CouchDB, such as replication, which is the next topic.
+
+    </p></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#replication"><h3 id="replication">Replication</h3></a>
+
+    <p>CouchDB replication is a mechanism to synchronize databases. Much like <code>rsync</code> synchronizes two directories locally or over a network, replication synchronizes two databases locally or remotely.
+
+    </p><p>In a simple POST request, you tell CouchDB the <em>source</em> and the <em>target</em> of a replication and CouchDB will figure out which documents and new document revisions are on <em>source</em> that are not yet on <em>target</em>, and will proceed to move the missing documents and revisions over.
+
+
+    </p><p>We’ll take an in-depth look at replication later in the book; in this chapter, we’ll just show you how to use it.
+
+    </p><p>First, we’ll create a target database. Note that CouchDB won’t automatically create a target database for you, and will return a replication failure if the target doesn’t exist (likewise for the source, but that mistake isn’t as easy to make):
+
+    </p><pre>curl -X PUT http://127.0.0.1:5984/albums-replica
+    </pre>
+
+    <p>Now we can use the database <code>albums-replica</code> as a replication target:
+
+    </p><pre>curl -vX POST http://127.0.0.1:5984/_replicate -d '{"source":"albums","target":"albums-replica"}'
+    </pre>
+
+    <div class="aside note">
+
+    <p>As of version 0.11, CouchDB supports the option <code>"create_target":true</code> placed in the JSON POSTed to the <code>_replicate</code> URL. It implicitly creates the target database if it doesn’t exist.
+
+
+    </p></div>
+
+    <p>CouchDB replies (this time we formatted the output so you can read it more easily):
+
+    </p><pre>{
+      "history": [
+        {
+          "start_last_seq": 0,
+          "missing_found": 2,
+          "docs_read": 2,
+          "end_last_seq": 5,
+          "missing_checked": 2,
+          "docs_written": 2,
+          "doc_write_failures": 0,
+          "end_time": "Sat, 11 Jul 2009 17:36:21 GMT",
+          "start_time": "Sat, 11 Jul 2009 17:36:20 GMT"
+        }
+      ],
+      "source_last_seq": 5,
+      "session_id": "924e75e914392343de89c99d29d06671",
+      "ok": true
+    }
+    </pre>
+
+    <p>CouchDB maintains a <em>session history</em> of replications. The response for a replication request contains the history entry for this <em>replication session</em>. It is also worth noting that the request for replication will stay <em>open</em> until replication closes. If you have a lot of documents, it’ll take a while until they are all replicated and you won’t get back the replication response until all documents are replicated. It is important to note that replication replicates the database only as it was at the point in time when replication was started. So, any additions, modifications, or deletions subsequent to the start of replication will not be replicated.
+
+    </p><p>We’ll punt on the details again—the <code>"ok": true</code> at the end tells us all went well. If you now have a look at the <code>albums-replica</code> database, you should see all the documents that you created in the <code>albums</code> database. Neat, eh?
+
+
+    </p><p>What you just did is called <em>local replication</em> in CouchDB terms. You created a local copy of a database. This is useful for backups or to keep snapshots of a specific state of your data around for later. You might want to do this if you are developing your applications but want to be able to roll back to a stable version of your code and data.
+
+    </p><p>There are more types of replication useful in other situations. The <code>source</code> and <code>target</code> members of our replication request are actually links (like in HTML) and so far we’ve seen links relative to the server we’re working on (hence <em>local</em>). You can also specify a remote database as the target:
+
+    </p><pre>curl -vX POST http://127.0.0.1:5984/_replicate -d '{"source":"albums","target":"http://127.0.0.1:5984/albums-replica"}'
+    </pre>
+
+    <p>Using a local <code>source</code> and a remote <code>target</code> database is called <em>push replication</em>. We’re pushing changes to a remote server.
+
+
+    </p><div class="aside note">
+
+    <p>Since we don’t have a second CouchDB server around just yet, we’ll just use the absolute address of our single server, but you should be able to infer from this that you can put any remote server in there.
+
+    </p></div>
+
+    <p>This is great for sharing local changes with remote servers or buddies next door.
+
+    </p><p>You can also use a remote <code>source</code> and a local <code>target</code> to do a <em>pull replication</em>. This is great for getting the latest changes from a server that is used by others:
+
+    </p><pre>curl -vX POST http://127.0.0.1:5984/_replicate -d '{"source":"http://127.0.0.1:5984/albums-replica","target":"albums"}'
+    </pre>
+
+    <p>Finally, you can run <em>remote replication</em>, which is mostly useful for management operations:
+
+    </p><pre>curl -vX POST http://127.0.0.1:5984/_replicate -d '{"source":"http://127.0.0.1:5984/albums","target":"http://127.0.0.1:5984/albums-replica"}'
+    </pre>
+
+    <div class="aside note">
+
+    <p><strong>CouchDB and REST</strong>
+
+    </p><p>CouchDB prides itself on having a <em>RESTful API</em>, but these replication requests don’t look very RESTy to the trained eye. What’s up with that? While CouchDB’s core database, document, and attachment API are RESTful, not all of CouchDB’s API is. The replication API is one example. There are more, as we’ll see later in the book.
+
+    </p><p>Why are there RESTful and non-RESTful APIs mixed up here? Have the developers been too lazy to go REST all the way? Remember, REST is an architectural style that lends itself to certain architectures (such as the CouchDB document API). But it is not a one-size-fits-all. Triggering an event like replication does not make a whole lot of sense in the REST world. It is more like a traditional remote procedure call. And there is nothing wrong with this.
+
+    </p><p>We very much believe in the “use the right tool for the job” philosophy, and REST does not fit every job. For support, we refer to Leonard Richardson and Sam Ruby who wrote <a href="http://oreilly.com/catalog/9780596529260">RESTful Web Services</a> (O’Reilly), as they share our view.
+
+
+    </p></div>
+
+    </div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#wrap"><h3 id="wrap">Wrapping Up</h3></a>
+
+    <p>This is still not the full CouchDB API, but we discussed the essentials in great detail. We’re going to fill in the blanks as we go. For now, we believe you’re ready to start building CouchDB applications.
+    </p></div>     <div class="content_footer">              </div>            </div>          </div>                <div class="footer">        <div class="container"><p>A <a href="http://oreilly.com/">O’Reilly</a> book            about <a href="http://couchdb.apache.org/">CouchDB</a> by            <a href="http://www.couchone.com/">J. Chris Anderson</a>,            <a href="http://www.couchone.com/">Jan Lehnardt</a> and            <a href="http://nslater.org/">Noah Slater</a>.</p></div>      </div>            </body></html>
+    
