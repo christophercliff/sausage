@@ -16,7 +16,7 @@
             
             // ### page `string`
             //
-            // Set the string to use to select the page elements.
+            // Sets the string to use to select the page elements.
             // 
             // Example:
             // 
@@ -30,7 +30,7 @@
             
             // ### content `function`
             // 
-            // Set the content of the sausage elements. Use `i` and `$page` to render content dynamically from the page element.
+            // Sets the content of the sausage elements. Use `i` and `$page` to render content dynamically.
             // 
             // Example:
             // 
@@ -233,7 +233,7 @@
         
         // ### draw `.sausage("draw")`
         // 
-        // Create the sausage UI.
+        // Creates the sausage UI elements.
         draw: function () {
             
             var self = this,
@@ -272,7 +272,7 @@
         
         // ### block `.sausage("block")`
         // 
-        // Prevent users from interacting with the sausage UI. Useful when loading data and updating the DOM.
+        // Blocks the UI to prevent users from interacting with the sausage UI. Useful when loading data and updating the DOM.
         block: function () {
             
             var self = this,
@@ -290,7 +290,7 @@
         
         // ### unblock `.sausage("unblock")`
         // 
-        // Unblock the UI once loading and DOM manipulation are complete.
+        // Unblocks the UI once loading and DOM manipulation are complete.
         unblock: function () {
             
             var self = this,
@@ -307,7 +307,7 @@
         
         // ### destroy `.sausage("destroy")`
         // 
-        // Remove the sausage instance from the DOM.
+        // Removes the sausage instance from the DOM.
         destroy: function () {
             
             var self = this;
