@@ -16,7 +16,7 @@
             
             // ### page `string`
             //
-            // Sets the string to use to select the page elements.
+            // Sets the string to be used to select page elements.
             // 
             // Example:
             // 
@@ -72,6 +72,7 @@
                 .appendTo(self.$inner)
                 ;
             
+            // Trigger the `create` event.
             self._trigger('create');
             
             return;
@@ -84,11 +85,12 @@
             
             var self = this;
             
-            if (self.$outer.scrollTop() < 1)
+            // Stop and destroy if scroll bar is not present.
+            if (self.$outer.height() >= self.$inner.height())
             {
-                //self.destroy();
+                self.destroy();
                 
-                //return;
+                return;
             }
             
             self.draw();
@@ -96,12 +98,14 @@
             self._events();
             self._delegates();
             
+            // Add a CSS class for styling purposes.
             self.$sausages
                 .addClass('sausage-set-init')
                 ;
             
             self.blocked = false;
             
+            // Trigger the `init` event.
             self._trigger('init');
             
             return;
@@ -151,7 +155,7 @@
         _getCurrent: function () {
             
             var self = this,
-                st = self.$outer.scrollTop() + self._getHandleHeight(self.$outer, self.$inner)/2,
+                st = self.$outer.scrollTop() + self._getHandleHeight(self.$outer, self.$inner)/4,
                 h_win = self.$outer.height(),
                 h_doc = self.$inner.height(),
                 i = 0;
@@ -207,18 +211,37 @@
                         val = $sausage.index(),
                         o = self.$inner.find(self.options.page).eq(val).offset().top;
                     
-                    $(window)
+                    self.$outer
                         .scrollTop(o)
                         ;
                     
-                    self._trigger('onClick');
+                    // Trigger the `onClick` event.
+                    // 
+                    // Example:
+                    // 
+                    //      $(window)
+                    //          .sausage({
+                    //              onClick: function (e, o) {
+                    //                  alert('You clicked the sausage at index: ' + o.i);
+                    //          }
+                    //      })
+                    //      ;
+                    //
+                    self._trigger('onClick', e, {
+                        $sausage: $sausage,
+                        i: val
+                    });
                     
                     if ($sausage.hasClass('current'))
                     {
                         return;
                     }
                     
-                    self._trigger('onUpdate');
+                    // Trigger the `onUpdate` event.
+                    self._trigger('onUpdate', e, {
+                        $sausage: $sausage,
+                        i: val
+                    });
                 })
                 ;
             
@@ -247,6 +270,7 @@
                 .removeClass(c)
                 ;
             
+            // Trigger the `update` event.
             self._trigger('update');
             
             return;
@@ -257,16 +281,10 @@
         // 
         _getHandleHeight: function ($outer, $inner) {
             
-            var st_0 = $outer.scrollTop(),
-                h;
+            var h_outer = $outer.height(),
+                h_inner = $inner.height();
             
-            $outer.scrollTop(99999999);
-            
-            h = ($inner.height() - $outer.scrollTop())/$inner.height()*$outer.height();
-            
-            $outer.scrollTop(st_0);
-            
-            return h;
+            return h_outer/h_inner*h_outer;
         },
         
         // # Public Methods
@@ -303,6 +321,8 @@
                 offset_s = offset_p.top/h_doc*h_win;
                 
                 s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
+                
+                // Create `self.offsets` for calculating current sausage.
                 self.offsets.push(offset_p.top);
             }
             
@@ -359,7 +379,7 @@
             
             var self = this;
             
-            self.element
+            self.$sausages
                 .remove()
                 ;
             
