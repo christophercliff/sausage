@@ -254,7 +254,7 @@
         
         // ### _getHandleHeight()
         // 
-        // Creates the sausage UI elements.
+        // 
         _getHandleHeight: function ($outer, $inner) {
             
             var st_0 = $outer.scrollTop(),
