@@ -66,6 +66,7 @@
             self.$inner = $.isWindow(self.element.get(0)) ? $('body') : $el.children(':first-child');
             self.$sausages = $('<div class="sausage-set"/>');
             self.sausages = self.$sausages.get(0);
+            self.offsets = [];
             
             self.$sausages
                 .appendTo(self.$inner)
@@ -137,7 +138,6 @@
                 }
                 
                 self.hasScrolled = false;
-                
                 self._update();
                 
             }, 250);
@@ -151,10 +151,26 @@
         _getCurrent: function () {
             
             var self = this,
-                st = self.$outer.scrollTop(),
+                st = self.$outer.scrollTop() + self._getHandleHeight(self.$outer, self.$inner)/2,
                 h_win = self.$outer.height(),
                 h_doc = self.$inner.height(),
-                i = Math.floor((st + h_win/2)/h_doc*self.count);
+                i = 0;
+            
+            for (l = self.offsets.length; i < l; i++)
+            {
+                if (!self.offsets[i + 1])
+                {
+                    return i;
+                }
+                else if (st <= self.offsets[i])
+                {
+                    return i;
+                }
+                else if (st > self.offsets[i] && st <= self.offsets[i + 1])
+                {
+                    return i;
+                }
+            }
             
             return i;
         },
@@ -236,6 +252,23 @@
             return;
         },
         
+        // ### _getHandleHeight()
+        // 
+        // Creates the sausage UI elements.
+        _getHandleHeight: function ($outer, $inner) {
+            
+            var st_0 = $outer.scrollTop(),
+                h;
+            
+            $outer.scrollTop(99999999);
+            
+            h = ($inner.height() - $outer.scrollTop())/$inner.height()*$outer.height();
+            
+            $outer.scrollTop(st_0);
+            
+            return h;
+        },
+        
         // # Public Methods
         //
         //
@@ -250,7 +283,9 @@
                 h_doc = self.$inner.height(),
                 $items = self.$inner.find(self.options.page),
                 $page,
-                s = [];
+                s = [],
+                offset_p,
+                offset_s;
             
             self.count = $items.length;
             
@@ -264,8 +299,11 @@
             for (var i = 0; i < self.count; i++)
             {
                 $page = $items.eq(i);
+                offset_p = $page.offset();
+                offset_s = offset_p.top/h_doc*h_win;
                 
-                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;">' + self.options.content(i, $page) + '</div>');
+                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
+                self.offsets.push(offset_p.top);
             }
             
             // Use Array.join() for speed.
