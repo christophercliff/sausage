@@ -43,7 +43,7 @@
             //      ;
             //
             content: function (i, $page) {
-                return '<a class="sausage-a" href="' + i + '"><span class="sausage-span">' + (i + 1) + '</span></a>';
+                return '<span class="sausage-span">' + (i + 1) + '</span>';
             }
             
         },

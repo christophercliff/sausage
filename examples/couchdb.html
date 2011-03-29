@@ -13,24 +13,38 @@
     </head>
     <body class="complete">
         
-        <div class="sausagejs">
+        <div class="sausagejs reset">
             
-            <link rel="stylesheet" type="text/css" href="../lib/sausage-couchdb.css">
+            <link rel="stylesheet" type="text/css" href="../lib/sausage.reset.css">
+            <link rel="stylesheet" type="text/css" href="../lib/sausage.couchdb.css">
             <style type="text/css">
                 
                 .sausagejs {
-                    /*background-color: #2a2a2a;
-                    -moz-box-shadow: inset 0px 0px 30px 20px rgba(0, 0, 0, 0.25);*/
+                    width: 520px;
+                    padding: 40px; margin: 50px auto;
+                    color: #fff;
+                    background-color: #2a2a2a;
+                    font-size: 15px; line-height: 20px;
+                    -moz-box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.50);*/
                 }
-                    .sausagejs-content {
-                        width: 520px;
-                        padding: 20px; margin: 0 auto;
-                    }
-                    .sausagejs-description {
+                    .sausagejs .sausagejs-description {
                         margin-bottom: 1.5em;
                     }
-                    .sausagejs-code {
-                        
+                    .sausagejs .sausagejs-code {
+                        font-family: Monaco, Consolas, "Lucida Console", monospace;
+                        font-size: 12px;
+                        line-height: 18px;
+                        color: #f79f9e;
+                        font-size: 12px;
+                        padding: 2px 0 2px 12px;
+                        border-left: 6px solid #f79f9e;
+                        margin: 0px 0 30px;
+                        background: none;
+                        -moz-box-shadow: none;
+                    }
+                    .sausagejs a {
+                        color: #fff;
+                        text-decoration: underline;
                     }
                 
             </style>
@@ -44,7 +58,7 @@
                     $(window)
                         .sausage({
                             content: function (i, $page) {
-                                return '<a class="sausage-a" href="#' + i + '"><span class="sausage-span">' + $page.find('.anchor').first().text() + '</span></a>';
+                                return '<span class="sausage-span">' + $page.find('.anchor').first().text() + '</span>';
                             }
                         })
                         ;
@@ -53,22 +67,21 @@
                 
             </script>
             
-            <!--<div class="sausagejs-content">
-                
-                <div class="sausagejs-description">This is a sausage.js example page.</div>
-                
-<pre class="sausagejs-code">
-$(window)
-    .sausage({
-        content: function (i, $page) {
-            return '<a class="sausage-a" href="#' + i + '"><span class="sausage-span">' + $page.find('.anchor').first().text() + '</span></a>';
-        }
-    })
-    ;</pre>
-                
-            </div>
+            <div class="sausagejs-description">This is a <a href="http://christophercliff.github.com/sausage/">sausage.js</a> example page. (For information on CouchDB, see the <a href="http://guide.couchdb.org/">definitive guide</a>.)<br /><br />This example uses the following sausage.js code:</div>
             
-        </div>-->
+<pre class="sausagejs-code">
+    $(window)
+        .sausage({
+            content: function (i, $page) {
+                return '&lt;span class="sausage-span"&gt;'
+                    + $page.find('.anchor').first().text()
+                    + '&lt;/span&gt;';
+            }
+        })
+        ;
+</pre>
+            
+        </div>
         
         <div class="container">                  <div class="page_header">        <h1 class="logo">          <a href="../../../index.html" title="home">CouchDB <span>The Definitive Guide</span></a>        </h1>        <div class="search_box">          <form class="search" action="http://www.google.com/search">            <input name="as_sitesearch" value="guide.couchdb.org" type="hidden">            <input name="as_q" value="" class="search_field" type="text">            <input value="Search" class="search_btn" type="submit">          </form>        </div>      </div>                <div class="notice"></div>            <div class="inner wrap">              <div class="sidebar">              <h3><a href="../../../index.html">Home</a></h3><h3><a href="index.html">Edition 1 (English)</a></h3><h3><a href="tour.html">Previous Page</a></h3><h3><a href="design.html">Next Page</a></h3><h3>Home</h3><ul><li><a href="#api">The Core API</a><ul><li><a href="#server">Server</a></li><li><a href="#databases">Databases</a></li><li><a href="#documents">Documents</a><ul><li><a href="#revisions">Revisions</a></li><li><a href="#detail">Documents in Detail</a><ul><li><a href="#attachments">Attachments</a></li></ul></li><li><a href="#replication">Replication</a></li><li><a href="#wrap">Wrapping Up</a></li></ul></li></ul></li></ul></div>              <div class="content body"></div><div class="page" style="margin-bottom: 2em;"><a class="anchor" href="#api"><h2 id="api">The Core API</h2></a>
 
