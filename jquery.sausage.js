@@ -9,12 +9,14 @@
     $.widget('cc.sausage', {
         
         // # Options
+        //
+        //
         
         options: {
             
             // ### page `string`
             //
-            // Set the string to use to select the page elements.
+            // Sets the string to be used to select page elements.
             // 
             // Example:
             // 
@@ -28,7 +30,7 @@
             
             // ### content `function`
             // 
-            // Set the content of the sausage elements. Use `i` and `$page` to render content dynamically from the page element.
+            // Sets the content of the sausage elements. Use `i` and `$page` to render content dynamically.
             // 
             // Example:
             // 
@@ -46,33 +48,45 @@
             
         },
         
+        // # Private Methods
+        //
+        //
+        
+        // ## ._create()
+        //
+        //
         _create: function () {
             
             var self = this,
                 $el = self.element;
             
-            self.blocked = true,
             // Use $el for the outer element.
-            self.$outer = $el,
+            self.$outer = $el;
             // Use `body` for the inner element if the outer element is `window`. Otherwise, use the first child of `$el`.
-            self.$inner = $.isWindow(self.element.get(0)) ? $('body') : $el.children(':first-child'),
+            self.$inner = $.isWindow(self.element.get(0)) ? $('body') : $el.children(':first-child');
             self.$sausages = $('<div class="sausage-set"/>');
             self.sausages = self.$sausages.get(0);
+            self.offsets = [];
             
             self.$sausages
                 .appendTo(self.$inner)
                 ;
             
+            // Trigger the `create` event.
             self._trigger('create');
             
             return;
         },
         
+        // ## ._init()
+        //
+        //
         _init: function () {
             
             var self = this;
             
-            if (self.$outer.scrollTop() < 1)
+            // Stop and destroy if scroll bar is not present.
+            if (self.$outer.height() >= self.$inner.height())
             {
                 self.destroy();
                 
@@ -80,21 +94,26 @@
             }
             
             self.draw();
-            self._update(self.options.current);
+            self._update();
             self._events();
             self._delegates();
             
+            // Add a CSS class for styling purposes.
             self.$sausages
                 .addClass('sausage-set-init')
                 ;
             
             self.blocked = false;
             
+            // Trigger the `init` event.
             self._trigger('init');
             
             return;
         },
         
+        // ## ._events()
+        //
+        //
         _events: function () {
             
             var self = this;
@@ -122,20 +141,47 @@
                     return;
                 }
                 
-                self.hasScrolled = true;
-                
-                var st = $(window).scrollTop(),
-                    h_win = $(window).height(),
-                    h_doc = $(document).height(),
-                    i = Math.floor((st + h_win/2)/h_doc*self.count);
-                
-                self._update(i);
+                self.hasScrolled = false;
+                self._update();
                 
             }, 250);
             
             return;
         },
         
+        // ## ._getCurrent()
+        //
+        //
+        _getCurrent: function () {
+            
+            var self = this,
+                st = self.$outer.scrollTop() + self._getHandleHeight(self.$outer, self.$inner)/4,
+                h_win = self.$outer.height(),
+                h_doc = self.$inner.height(),
+                i = 0;
+            
+            for (l = self.offsets.length; i < l; i++)
+            {
+                if (!self.offsets[i + 1])
+                {
+                    return i;
+                }
+                else if (st <= self.offsets[i])
+                {
+                    return i;
+                }
+                else if (st > self.offsets[i] && st <= self.offsets[i + 1])
+                {
+                    return i;
+                }
+            }
+            
+            return i;
+        },
+        
+        // ## ._delegates()
+        //
+        //
         _delegates: function () {
             
             var self = this;
@@ -165,27 +211,50 @@
                         val = $sausage.index(),
                         o = self.$inner.find(self.options.page).eq(val).offset().top;
                     
-                    $(window)
+                    self.$outer
                         .scrollTop(o)
                         ;
                     
-                    self._trigger('onClick');
+                    // Trigger the `onClick` event.
+                    // 
+                    // Example:
+                    // 
+                    //      $(window)
+                    //          .sausage({
+                    //              onClick: function (e, o) {
+                    //                  alert('You clicked the sausage at index: ' + o.i);
+                    //          }
+                    //      })
+                    //      ;
+                    //
+                    self._trigger('onClick', e, {
+                        $sausage: $sausage,
+                        i: val
+                    });
                     
                     if ($sausage.hasClass('current'))
                     {
                         return;
                     }
                     
-                    self._trigger('onUpdate');
+                    // Trigger the `onUpdate` event.
+                    self._trigger('onUpdate', e, {
+                        $sausage: $sausage,
+                        i: val
+                    });
                 })
                 ;
             
             return;
         },
         
-        _update: function (i) {
+        // ## ._update()
+        //
+        //
+        _update: function () {
             
             var self = this;
+                i = self._getCurrent(),
                 c = 'sausage-current';
             
             if (i === self.current || self.blocked)
@@ -201,16 +270,30 @@
                 .removeClass(c)
                 ;
             
+            // Trigger the `update` event.
             self._trigger('update');
             
             return;
         },
         
-        // # Methods
+        // ### _getHandleHeight()
+        // 
+        // 
+        _getHandleHeight: function ($outer, $inner) {
+            
+            var h_outer = $outer.height(),
+                h_inner = $inner.height();
+            
+            return h_outer/h_inner*h_outer;
+        },
+        
+        // # Public Methods
+        //
+        //
         
         // ### draw `.sausage("draw")`
         // 
-        // Create the sausage UI.
+        // Creates the sausage UI elements.
         draw: function () {
             
             var self = this,
@@ -218,7 +301,9 @@
                 h_doc = self.$inner.height(),
                 $items = self.$inner.find(self.options.page),
                 $page,
-                s = [];
+                s = [],
+                offset_p,
+                offset_s;
             
             self.count = $items.length;
             
@@ -232,8 +317,13 @@
             for (var i = 0; i < self.count; i++)
             {
                 $page = $items.eq(i);
+                offset_p = $page.offset();
+                offset_s = offset_p.top/h_doc*h_win;
                 
-                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + ($page.offset().top/h_doc*h_win) + 'px;">' + self.options.content(i, $page) + '</div>');
+                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
+                
+                // Create `self.offsets` for calculating current sausage.
+                self.offsets.push(offset_p.top);
             }
             
             // Use Array.join() for speed.
@@ -249,7 +339,7 @@
         
         // ### block `.sausage("block")`
         // 
-        // Prevent users from interacting with the sausage UI. Useful when loading data and updating the DOM.
+        // Blocks the UI to prevent users from interacting with the sausage UI. Useful when loading data and updating the DOM.
         block: function () {
             
             var self = this,
@@ -267,7 +357,7 @@
         
         // ### unblock `.sausage("unblock")`
         // 
-        // Unblock the UI once loading and DOM manipulation are complete.
+        // Unblocks the UI once loading and DOM manipulation are complete.
         unblock: function () {
             
             var self = this,
@@ -284,12 +374,12 @@
         
         // ### destroy `.sausage("destroy")`
         // 
-        // Remove the sausage instance from the DOM.
+        // Removes the sausage instance from the DOM.
         destroy: function () {
             
             var self = this;
             
-            self.element
+            self.$sausages
                 .remove()
                 ;
             
