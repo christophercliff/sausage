@@ -1,4 +1,4 @@
-//     jquery.sausage.js 0.1.0
+//     jquery.sausage.js 1.0.0
 //     (c) 2011 Christopher Cliff
 //     Freely distributed under the MIT license.
 //     For all details and documentation:
