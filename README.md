@@ -1,3 +1,3 @@
-A jQuery UI Widget for contextual pagination.
+A jQuery UI widget for contextual pagination.
 
-Currently in development.
+For details, see [http://christophercliff.github.com/sausage](http://christophercliff.github.com/sausage).

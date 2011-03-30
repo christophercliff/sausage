@@ -9,7 +9,6 @@
         <!-- apply CSS reset because we are not savages -->
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset/reset-min.css">
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css">
-        <link rel="stylesheet" type="text/css" href="sausage.css">
         
         <style type="text/css">
             
@@ -115,7 +114,7 @@
                     
                     <h1>sausage.js</h1>
                     
-                    <p>Sausage is a jQuery UI widget for contextual pagination. It complements long or infinite-scrolling pages by keeping the user informed of her location within the document. The best way to understand how Sausage works is to <a href="examples/couchdb.html">view</a> <a href="https://github.com/christophercliff/sausage/tree/master/examples">some</a> <a href="https://github.com/christophercliff/sausage/tree/master/examples">examples</a>.</p>
+                    <p>Sausage is a jQuery UI widget for contextual pagination. It complements long or infinite-scrolling pages by keeping the user informed of her location within the document. The best way to understand how Sausage works is to <a href="examples/couchdb.html">view</a> <a href="examples/basic.html">some</a> <a href="https://github.com/christophercliff/sausage/tree/master/examples">examples</a>.</p>
                     
                     <p>A complete <a href="tests/index.html">test &amp; benchmark suite</a> is <strike>included</strike> coming soon. You may also read through the <a href="docs/jquery.sausage.html">annotated source code</a> or visit the project page on <a href="http://github.com/christophercliff/sausage/">GitHub</a>. You can report bugs and discuss features on the <a href="http://github.com/christophercliff/sausage/issues">issues page</a>, or send tweets to <a href="http://twitter.com/sausagejs">@sausagejs</a>.</p>
                     
@@ -126,7 +125,7 @@
                 
                     <table>
                       <tr>
-                        <td><a href="jquery.sausage.js">Development Version (0.1.0)</a></td>
+                        <td><a href="jquery.sausage.js">Development Version (1.0.0)</a></td>
                         <td><i>9 kb, Uncompressed with Comments</i></td>
                       </tr>
                       <!--<tr>
@@ -150,7 +149,7 @@
         ;
 </pre>
                     
-                    <div>For more advanced usage, refer to the <a href="https://github.com/christophercliff/sausage/tree/master/examples">examples</a> or view the <a href="docs/jquery.sausage.html">annotated source</a>.</p>
+                    <p>For more advanced usage, refer to the <a href="https://github.com/christophercliff/sausage/tree/master/examples">examples</a> or view the <a href="docs/jquery.sausage.html">annotated source</a>.</p>
                     
                 </li>
                 <!--<li class="section" data-name="Change Log">
@@ -160,29 +159,9 @@
                 </li>-->
             </ol>
             
-            <div class="footer">Logo design by <a href="http://toposgraphics.com">Roy Rub</a></div>
+            <div class="footer">Logo designed by <a href="http://toposgraphics.com">Roy Rub</a></div>
             
         </div><!-- /app -->
-        
-        <script type="text/javascript" src="lib/jquery-1.5.1.js"></script>
-        <script type="text/javascript" src="lib/jquery.ui.widget.js"></script>
-        <script type="text/javascript" src="jquery.sausage.js"></script>
-        <script type="text/javascript">
-            
-            $(function(){
-                return;
-                $(window)
-                    .sausage({
-                        page: '.section',
-                        content: function (i, $page) {
-                            return '<span class="sausage-span">' + $page.data('name') + '</span>';
-                        }
-                    })
-                    ;
-                
-            });
-            
-        </script>
         
     </body>
     

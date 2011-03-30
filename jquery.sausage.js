@@ -305,6 +305,7 @@
                 offset_p,
                 offset_s;
             
+            self.offsets = [];
             self.count = $items.length;
             
             // Detach from DOM while making changes.
