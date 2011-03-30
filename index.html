@@ -9,7 +9,7 @@
         <!-- apply CSS reset because we are not savages -->
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset/reset-min.css">
         <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.1/build/reset-fonts/reset-fonts.css">
-        <link rel="stylesheet" type="text/css" href="sausage.css">
+        <link rel="stylesheet" type="text/css" href="lib/sausage.css">
         
         <style type="text/css">
             
@@ -83,8 +83,26 @@
                             border-left: 6px solid #e6e7e8;
                             margin: 0px 0 30px;
                             }
+                            .footer {
+                                padding-top: 40px;
+                                font-size: 10px;
+                            }
             
         </style>
+        
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-1582519-8']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
         
     </head>
     
@@ -97,9 +115,9 @@
                     
                     <h1>sausage.js</h1>
                     
-                    <p>Sausage is a jQuery UI widget for contextual pagination. It complements long or infinite-scrolling pages by keeping the user informed of their location within the document. The best way to understand how Sausage works is to <a href="examples/first.html">view</a> <a href="examples/first.html">some</a> <a href="examples/first.html">examples</a>.</p>
+                    <p>Sausage is a jQuery UI widget for contextual pagination. It complements long or infinite-scrolling pages by keeping the user informed of her location within the document. The best way to understand how Sausage works is to <a href="examples/couchdb.html">view</a> <a href="https://github.com/christophercliff/sausage/tree/master/examples">some</a> <a href="https://github.com/christophercliff/sausage/tree/master/examples">examples</a>.</p>
                     
-                    <p>A complete <a href="tests/index.html">test &amp; benchmark suite</a> is included. You may also read through the <a href="docs/jquery.sausage.html">annotated source code</a> or visit the project page on <a href="http://github.com/christophercliff/sausage/">GitHub</a>. You can report bugs and discuss features on the <a href="http://github.com/christophercliff/sausage/issues">issues page</a>, or send tweets to <a href="http://twitter.com/sausagejs">@sausagejs</a>.</p>
+                    <p>A complete <a href="tests/index.html">test &amp; benchmark suite</a> is <strike>included</strike> coming soon. You may also read through the <a href="docs/jquery.sausage.html">annotated source code</a> or visit the project page on <a href="http://github.com/christophercliff/sausage/">GitHub</a>. You can report bugs and discuss features on the <a href="http://github.com/christophercliff/sausage/issues">issues page</a>, or send tweets to <a href="http://twitter.com/sausagejs">@sausagejs</a>.</p>
                     
                 </li>
                 <li class="section" data-name="Downloads &amp; Dependencies">
@@ -109,13 +127,12 @@
                     <table>
                       <tr>
                         <td><a href="jquery.sausage.js">Development Version (0.1.0)</a></td>
-                        <td><i>28kb, Uncompressed with Comments</i></td>
+                        <td><i>9 kb, Uncompressed with Comments</i></td>
                       </tr>
-                      <tr>
+                      <!--<tr>
                         <td><a href="jquery.sausage-min.js">Production Version (0.1.0)</a></td>
                         <td><i>3kb, Minified and Gzipped</i></td>
-                      </tr>
-                      
+                      </tr>-->
                     </table>
                     
                     <p>Sausage depends on both <a href="http://jquery.com">jQuery</a> and the <a href="http://jqueryui.com">jQuery UI</a> widget factory.</p>
@@ -128,19 +145,22 @@
                     <p>To use, just apply <tt>.sausage()</tt> to <tt>window</tt>.</p>
                     
 <pre>
-$(window).sausage();</pre>
+    $(window)
+        .sausage()
+        ;
+</pre>
                     
-                    <div>For more advanced usage, refer to the <a href="examples">examples</a> or view the <a href="docs/jquery.sausage.html">annotated source</a>.</p>
+                    <p>For more advanced usage, refer to the <a href="https://github.com/christophercliff/sausage/tree/master/examples">examples</a> or view the <a href="docs/jquery.sausage.html">annotated source</a>.</p>
                     
                 </li>
-                <li class="section" data-name="Change Log">
+                <!--<li class="section" data-name="Change Log">
                     
                     <h2>Change Log</h2>
                     
-                </li>
+                </li>-->
             </ol>
             
-            Logo design by <a href="http://toposgraphics.com">Topos Graphics</a>
+            <div class="footer">Logo design by <a href="http://toposgraphics.com">Roy Rub</a></div>
             
         </div><!-- /app -->
         
@@ -150,12 +170,12 @@ $(window).sausage();</pre>
         <script type="text/javascript">
             
             $(function(){
-                
+                return;
                 $(window)
                     .sausage({
                         page: '.section',
                         content: function (i, $page) {
-                            return '<a class="sausage-a" href="#' + i + '"><span class="sausage-span">' + $page.data('name') + '</span></a>';
+                            return '<span class="sausage-span">' + $page.data('name') + '</span>';
                         }
                     })
                     ;
