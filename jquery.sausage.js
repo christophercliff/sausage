@@ -276,7 +276,7 @@
             return;
         },
         
-        // ### _getHandleHeight()
+        // ### ._getHandleHeight()
         // 
         // 
         _getHandleHeight: function ($outer, $inner) {
