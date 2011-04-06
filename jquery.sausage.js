@@ -120,13 +120,13 @@
             
             self.hasScrolled = false;
             
-            $(window)
-                .resize(function(){
+            self.$outer
+                .bind('resize.sausage', function(){
                     
                     self.draw();
                     
                 })
-                .scroll(function(e){
+                .bind('scroll.sausage', function(e){
                     
                     self.hasScrolled = true;
                     
@@ -379,6 +379,10 @@
         destroy: function () {
             
             var self = this;
+            
+            self.$outer
+                .unbind('.sausage')
+                ;
             
             self.$sausages
                 .remove()
