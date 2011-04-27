@@ -270,19 +270,6 @@
                 ;
             
             return;
-            self.$outer
-            //$('html, body')
-                .animate({
-                    scrollTop: o
-                }, 500)
-                //.scrollTop(o)
-                ;
-            
-                self.$outer
-                    .scrollTop(o)
-                    ;
-            
-            return;
         },
         
         _handleClick: function () {
