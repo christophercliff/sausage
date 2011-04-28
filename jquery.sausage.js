@@ -52,7 +52,7 @@
         //
         //
         
-        // ## ._create()
+        // ## `._create()`
         //
         //
         _create: function () {
@@ -78,7 +78,7 @@
             return;
         },
         
-        // ## ._init()
+        // ## `._init()`
         //
         //
         _init: function () {
@@ -111,7 +111,7 @@
             return;
         },
         
-        // ## ._events()
+        // ## `._events()`
         //
         //
         _events: function () {
@@ -120,13 +120,13 @@
             
             self.hasScrolled = false;
             
-            $(window)
-                .resize(function(){
+            self.$outer
+                .bind('resize.sausage', function(){
                     
                     self.draw();
                     
                 })
-                .scroll(function(e){
+                .bind('scroll.sausage', function(e){
                     
                     self.hasScrolled = true;
                     
@@ -149,7 +149,7 @@
             return;
         },
         
-        // ## ._getCurrent()
+        // ## `._getCurrent()`
         //
         //
         _getCurrent: function () {
@@ -179,7 +179,7 @@
             return i;
         },
         
-        // ## ._delegates()
+        // ## `._delegates()`
         //
         //
         _delegates: function () {
@@ -211,9 +211,7 @@
                         val = $sausage.index(),
                         o = self.$inner.find(self.options.page).eq(val).offset().top;
                     
-                    self.$outer
-                        .scrollTop(o)
-                        ;
+                    self._scrollTo(o);
                     
                     // Trigger the `onClick` event.
                     // 
@@ -248,7 +246,42 @@
             return;
         },
         
-        // ## ._update()
+        _scrollTo: function (o) {
+            
+            var self = this,
+                $outer = self.$outer,
+                rate = 2/1, // px/ms
+                distance = self.offsets[self.current] - o,
+                duration = Math.abs(distance/rate);
+                // Travel at 2 px per 1 ms but never longer than 1 s.
+                duration = (duration < 1000) ? duration : 1000;
+            
+            //// TODO: Animate scrollTop fails on `window`, research this
+            if (self.$outer.get(0) === window)
+            {
+                $outer = $('html, document');
+            }
+            
+            $outer
+                .stop(true)
+                .animate({
+                    scrollTop: o
+                }, duration)
+                ;
+            
+            return;
+        },
+        
+        _handleClick: function () {
+            
+            var self = this
+            
+            
+            
+            return;
+        },
+        
+        // ## `._update()`
         //
         //
         _update: function () {
@@ -276,7 +309,7 @@
             return;
         },
         
-        // ### ._getHandleHeight()
+        // ### `._getHandleHeight()`
         // 
         // 
         _getHandleHeight: function ($outer, $inner) {
@@ -379,6 +412,10 @@
         destroy: function () {
             
             var self = this;
+            
+            self.$outer
+                .unbind('.sausage')
+                ;
             
             self.$sausages
                 .remove()
