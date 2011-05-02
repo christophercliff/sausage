@@ -16,6 +16,7 @@
         -webkit-border-top-right-radius: 8px;
         -moz-box-shadow: inset 0px 1px 2px 4px rgba(0, 0, 0, 0.025);
         -webkit-box-shadow: inset 0px 1px 2px 4px rgba(0, 0, 0, 0.025);
+        cursor: pointer;
     }
     .sausage-hover,
     .sausage-current {
