@@ -256,10 +256,9 @@
                 // Travel at 2 px per 1 ms but never longer than 1 s.
                 duration = (duration < 1000) ? duration : 1000;
             
-            //// TODO: Animate scrollTop fails on `window`, research this
             if (self.$outer.get(0) === window)
             {
-                $outer = $('html, document');
+                $outer = $('body, html, document');
             }
             
             $outer
