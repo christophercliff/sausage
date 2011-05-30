@@ -1,4 +1,4 @@
-<!DOCTYPE html>  <html> <head>   <title>jquery.sausage.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jquery.sausage.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <pre><code>jquery.sausage.js 0.1.0
+<!DOCTYPE html>  <html> <head>   <title>jquery.sausage.js</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jquery.sausage.js             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <pre><code>jquery.sausage.js 1.0.0
 (c) 2011 Christopher Cliff
 Freely distributed under the MIT license.
 For all details and documentation:
@@ -34,7 +34,7 @@ http://christophercliff.github.com/sausage
  })
  ;
 </code></pre>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">content</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">$page</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="s1">&#39;&lt;a class=&quot;sausage-a&quot; href=&quot;&#39;</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&lt;span class=&quot;sausage-span&quot;&gt;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/span&gt;&lt;/a&gt;&#39;</span><span class="p">;</span>
+                <span class="k">return</span> <span class="s1">&#39;&lt;span class=&quot;sausage-span&quot;&gt;&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/span&gt;&#39;</span><span class="p">;</span>
             <span class="p">}</span>
             
         <span class="p">},</span>
@@ -167,14 +167,14 @@ http://christophercliff.github.com/sausage
                     <span class="nx">self</span><span class="p">.</span><span class="nx">$outer</span>
                         <span class="p">.</span><span class="nx">scrollTop</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span>
                         <span class="p">;</span>
-                    </pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Triggers the <code>onClick</code> event.</p>
+                    </pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Trigger the <code>onClick</code> event.</p>
 
 <p>Example:</p>
 
 <pre><code> $(window)
      .sausage({
          onClick: function (e, o) {
-             alert(o.i);
+             alert('You clicked the sausage at index: ' + o.i);
      }
  })
  ;
@@ -218,7 +218,7 @@ http://christophercliff.github.com/sausage
             
             <span class="k">return</span><span class="p">;</span>
         <span class="p">},</span>
-        </pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <h3>_getHandleHeight()</h3>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">_getHandleHeight</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$outer</span><span class="p">,</span> <span class="nx">$inner</span><span class="p">)</span> <span class="p">{</span>
+        </pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <h3>._getHandleHeight()</h3>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">_getHandleHeight</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">$outer</span><span class="p">,</span> <span class="nx">$inner</span><span class="p">)</span> <span class="p">{</span>
             
             <span class="kd">var</span> <span class="nx">h_outer</span> <span class="o">=</span> <span class="nx">$outer</span><span class="p">.</span><span class="nx">height</span><span class="p">(),</span>
                 <span class="nx">h_inner</span> <span class="o">=</span> <span class="nx">$inner</span><span class="p">.</span><span class="nx">height</span><span class="p">();</span>
@@ -238,6 +238,7 @@ http://christophercliff.github.com/sausage
                 <span class="nx">offset_p</span><span class="p">,</span>
                 <span class="nx">offset_s</span><span class="p">;</span>
             
+            <span class="nx">self</span><span class="p">.</span><span class="nx">offsets</span> <span class="o">=</span> <span class="p">[];</span>
             <span class="nx">self</span><span class="p">.</span><span class="nx">count</span> <span class="o">=</span> <span class="nx">$items</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
             </pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Detach from DOM while making changes.</p>             </td>             <td class="code">               <div class="highlight"><pre>            <span class="nx">self</span><span class="p">.</span><span class="nx">$sausages</span>
                 <span class="p">.</span><span class="nx">detach</span><span class="p">()</span>
