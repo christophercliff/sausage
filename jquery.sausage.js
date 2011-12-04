@@ -45,7 +45,12 @@
             content: function (i, $page) {
                 return '<span class="sausage-span">' + (i + 1) + '</span>';
             }
-            
+
+            // ### even 'boolen'
+            //
+            // When passed as true, all sausages will be equal size and spacing, regardless of height in the page.
+            even: false
+
         },
         
         // # Private Methods
@@ -335,7 +340,8 @@
                 $page,
                 s = [],
                 offset_p,
-                offset_s;
+                offset_s,
+                even_height;
             
             self.offsets = [];
             self.count = $items.length;
@@ -350,11 +356,17 @@
             for (var i = 0; i < self.count; i++)
             {
                 $page = $items.eq(i);
-                offset_p = $page.offset();
-                offset_s = offset_p.top/h_doc*h_win;
-                
-                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
-                
+                if (!self.options.even) {
+                    offset_p = $page.offset();
+                    offset_s = offset_p.top/h_doc*h_win;
+
+	                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
+                } else {
+                    even_height = h_win/self.count;
+                    offset_p = even_height*i;
+	                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + even_height + 'px;top:' + offset_p + 'px;">' + self.options.content(i, $page) + '</div>');
+                }
+
                 // Create `self.offsets` for calculating current sausage.
                 self.offsets.push(offset_p.top);
             }
