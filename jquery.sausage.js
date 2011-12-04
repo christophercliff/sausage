@@ -1,4 +1,4 @@
-//     jquery.sausage.js 1.0.0
+//     jquery.sausage.js 1.0.1
 //     (c) 2011 Christopher Cliff
 //     Freely distributed under the MIT license.
 //     For all details and documentation:
@@ -44,11 +44,11 @@
             //
             content: function (i, $page) {
                 return '<span class="sausage-span">' + (i + 1) + '</span>';
-            }
+            },
 
             // ### even 'boolen'
             //
-            // When passed as true, all sausages will be equal size and spacing, regardless of height in the page.
+            // When passed as true, all sausages will be equally sized and spaced, regardless of height in the page.
             even: false
 
         },
@@ -341,7 +341,8 @@
                 s = [],
                 offset_p,
                 offset_s,
-                even_height;
+                even_height,
+                even_top;
             
             self.offsets = [];
             self.count = $items.length;
@@ -360,11 +361,12 @@
                     offset_p = $page.offset();
                     offset_s = offset_p.top/h_doc*h_win;
 
-	                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
+                    s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + ($page.outerHeight()/h_doc*h_win) + 'px;top:' + offset_s + 'px;">' + self.options.content(i, $page) + '</div>');
                 } else {
                     even_height = h_win/self.count;
-                    offset_p = even_height*i;
-	                s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + even_height + 'px;top:' + offset_p + 'px;">' + self.options.content(i, $page) + '</div>');
+                    even_top = even_height*i;
+                    offset_p = $page.offset();
+                    s.push('<div class="sausage' + ((i === self.current) ? ' sausage-current' : '') + '" style="height:' + even_height + 'px;top:' + even_top + 'px;">' + self.options.content(i, $page) + '</div>');
                 }
 
                 // Create `self.offsets` for calculating current sausage.
