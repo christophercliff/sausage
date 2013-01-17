@@ -1,10 +1,11 @@
-//     jquery.sausage.js 1.0.0
-//     (c) 2011 Christopher Cliff
-//     Freely distributed under the MIT license.
-//     For all details and documentation:
-//     http://christophercliff.github.com/sausage
+/*!
+ * jQuery UI jQuery.sausage.js 1.0.0
+ * Author: 2011 Christopher Cliff
+ * For all details and documentation: http://christophercliff.github.com/sausage
+ * Licensed under the MIT license
+ */
 
-(function($, undefined){
+;(function($, window, document, undefined){
     
     $.widget('cc.sausage', {
         
@@ -425,4 +426,4 @@
         
     });
     
-})(jQuery);
+})( jQuery, window, document );
